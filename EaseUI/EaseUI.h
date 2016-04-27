@@ -9,8 +9,12 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Hyphenate Inc.
  */
+#ifndef EaseUI_h
+#define EaseUI_h
 
 #import <Foundation/Foundation.h>
+
+#if TARGET_OS_IPHONE
 
 #import "EaseConversationListViewController.h"
 #import "EaseMessageViewController.h"
@@ -40,6 +44,6 @@
 #import "UIViewController+DismissKeyboard.h"
 #import "EaseLocalDefine.h"
 
-@interface EaseUI : NSObject
+#endif
 
-@end
+#endif

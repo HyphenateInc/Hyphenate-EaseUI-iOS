@@ -21,7 +21,6 @@
 		D206D3681CB509EB007A23FE /* chat_sender_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D206D35A1CB509EB007A23FE /* chat_sender_bg@2x.png */; };
 		D20AA3E91BEA1E7400594EFB /* EaseBubbleView+Gif.m in Sources */ = {isa = PBXBuildFile; fileRef = D20AA3E81BEA1E7400594EFB /* EaseBubbleView+Gif.m */; };
 		D20AA3EC1BEA23DD00594EFB /* EaseCustomMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D20AA3EB1BEA23DD00594EFB /* EaseCustomMessageCell.m */; };
-		D250D3A21BD8D14400C8D553 /* EaseUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D250D3A11BD8D14400C8D553 /* EaseUI.m */; };
 		D250D3A81BD8D14400C8D553 /* libEaseUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D250D39C1BD8D14400C8D553 /* libEaseUI.a */; };
 		D250D4C01BD8D1CB00C8D553 /* EMAudioPlayerUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = D250D3C11BD8D1CB00C8D553 /* EMAudioPlayerUtil.m */; };
 		D250D4C11BD8D1CB00C8D553 /* EMAudioRecorderUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = D250D3C31BD8D1CB00C8D553 /* EMAudioRecorderUtil.m */; };
@@ -649,7 +648,6 @@
 		D20AA3EB1BEA23DD00594EFB /* EaseCustomMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseCustomMessageCell.m; sourceTree = "<group>"; };
 		D250D39C1BD8D14400C8D553 /* libEaseUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEaseUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D250D39F1BD8D14400C8D553 /* EaseUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EaseUI.h; sourceTree = "<group>"; };
-		D250D3A11BD8D14400C8D553 /* EaseUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EaseUI.m; sourceTree = "<group>"; };
 		D250D3A71BD8D14400C8D553 /* EaseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EaseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D250D3AD1BD8D14400C8D553 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D250D3BC1BD8D1CB00C8D553 /* EMCDDeviceManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMCDDeviceManagerDelegate.h; sourceTree = "<group>"; };
@@ -1038,7 +1036,6 @@
 				D250D3B81BD8D1CB00C8D553 /* EMUIKit */,
 				D2F769191CBE799F009778FB /* EaseUI-Prefix.pch */,
 				D250D39F1BD8D14400C8D553 /* EaseUI.h */,
-				D250D3A11BD8D14400C8D553 /* EaseUI.m */,
 			);
 			path = EaseUI;
 			sourceTree = "<group>";
@@ -1982,7 +1979,6 @@
 				D250D5031BD8D1CB00C8D553 /* NSDate+Category.m in Sources */,
 				D250D5211BD8D1CB00C8D553 /* EaseChatToolbar.m in Sources */,
 				D2F2C99B1C10604700F4AE1E /* MWGridViewController.m in Sources */,
-				D250D3A21BD8D14400C8D553 /* EaseUI.m in Sources */,
 				D2F2C9B91C10604700F4AE1E /* PSTCollectionViewLayout.m in Sources */,
 				D250D5131BD8D1CB00C8D553 /* EaseRefreshTableViewController.m in Sources */,
 				D250D5191BD8D1CB00C8D553 /* EaseMessageTimeCell.m in Sources */,

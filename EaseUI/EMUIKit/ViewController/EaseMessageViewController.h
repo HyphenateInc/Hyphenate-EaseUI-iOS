@@ -58,30 +58,6 @@
 
 /*!
  @method
- @brief 发送消息成功
- @discussion 消息发送成功的回调,用户可以自定义处理
- @param viewController 当前消息视图
- @param messageModel 消息模型
- @result
- */
-- (void)messageViewController:(EaseMessageViewController *)viewController
-          didSendMessageModel:(id<IMessageModel>)messageModel;
-
-/*!
- @method
- @brief 发送消息失败
- @discussion 消息发送失败的回调,用户可以自定义处理
- @param viewController 当前消息视图
- @param messageModel 消息模型
- @param error 错误描述
- @result
- */
-- (void)messageViewController:(EaseMessageViewController *)viewController
-   didFailSendingMessageModel:(id<IMessageModel>)messageModel
-                        error:(EMError *)error;
-
-/*!
- @method
  @brief 接收到消息的已读回执
  @discussion 接收到消息的已读回执的回调,用户可以自定义处理
  @param viewController 当前消息视图

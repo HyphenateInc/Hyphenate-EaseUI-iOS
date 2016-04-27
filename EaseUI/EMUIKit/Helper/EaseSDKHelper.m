@@ -57,6 +57,7 @@ static EaseSDKHelper *helper = nil;
 #pragma mark - app delegate notifications
 
 // 监听系统生命周期回调，以便将需要的事件传给SDK
+// Listen the life cycle of the system so that it will be passed to the SDK
 - (void)_setupAppDelegateNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -83,6 +84,7 @@ static EaseSDKHelper *helper = nil;
 
 #pragma mark - register apns
 // 注册推送
+// regist push
 - (void)_registerRemoteNotification
 {
     UIApplication *application = [UIApplication sharedApplication];
@@ -97,6 +99,7 @@ static EaseSDKHelper *helper = nil;
     
 #if !TARGET_IPHONE_SIMULATOR
     //iOS8 注册APNS
+    //iOS8 regist APNS
     if ([application respondsToSelector:@selector(registerForRemoteNotifications)]) {
         [application registerForRemoteNotifications];
     }else{
@@ -117,9 +120,11 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
                otherConfig:(NSDictionary *)otherConfig
 {
     //注册AppDelegate默认回调监听
+    //Regist the default notification from AppDelegate
     [self _setupAppDelegateNotifications];
     
     //注册apns
+    //Regist APNS
     [self _registerRemoteNotification];
     
     EMOptions *options = [EMOptions optionsWithAppkey:appkey];
@@ -149,6 +154,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 
 {
     // 表情映射。
+    // Emoji mapping
     NSString *willSendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:text];
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:willSendText];
     NSString *from = [[EMClient sharedClient] currentUsername];
