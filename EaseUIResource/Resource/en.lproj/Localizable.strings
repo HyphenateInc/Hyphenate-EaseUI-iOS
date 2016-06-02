@@ -336,9 +336,9 @@
 "NSDateCategory.text6" = "%.f years ago";
 "NSDateCategory.text7" = "M-d %@";
 "NSDateCategory.text8" = "M-d HH:mm";
-"NSDateCategory.text9" = "aa hh:mm";
-"NSDateCategory.text10" = "aa hh:mm";
-"NSDateCategory.text11" = "aa hh:mm";
-"NSDateCategory.text12" = "aa hh:mm";
+"NSDateCategory.text9" = "hh:mm aa";
+"NSDateCategory.text10" = "hh:mm aa";
+"NSDateCategory.text11" = "hh:mm aa";
+"NSDateCategory.text12" = "hh:mm aa";
 "NSDateCategory.text13" = "M-d HH:mm";
 "NSDateCategory.text14" = "today %@";
