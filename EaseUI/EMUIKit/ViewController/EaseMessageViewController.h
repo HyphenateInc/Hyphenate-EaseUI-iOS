@@ -163,12 +163,12 @@
  @brief 获取消息，返回EMMessage类型的数据列表
  @discussion
  @param viewController 当前消息视图
- @param timestamp 时间
+ @param messageId 消息Id
  @param count 时间
  @result 返回EMMessage类型的数据列表
  */
 - (NSArray *)messageViewController:(EaseMessageViewController *)viewController
-          loadMessageFromTimestamp:(long long)timestamp
+        loadMessageBeforeMessageId:(NSString *)messageId
                              count:(NSInteger)count;
 
 /*!

@@ -143,36 +143,35 @@
 - (void)tableViewDidTriggerHeaderRefresh
 {
     __weak typeof(self) weakself = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = nil;
-        NSArray *buddyList = [[EMClient sharedClient].contactManager getContactsFromServerWithError:&error];
-        if (!error) {
-            [weakself.dataArray removeAllObjects];
-            NSMutableArray *contactsSource = [NSMutableArray arrayWithArray:buddyList];
-            
-            //从获取的数据中剔除黑名单中的好友
-            NSArray *blockList = [[EMClient sharedClient].contactManager getBlackListFromDB];
-            for (NSInteger i = (buddyList.count - 1); i >= 0; i--) {
-                NSString *buddy = [buddyList objectAtIndex:i];
-                if (![blockList containsObject:buddy]) {
-                    [contactsSource addObject:buddy];
-                    
-                    id<IUserModel> model = nil;
-                    if (weakself.dataSource && [weakself.dataSource respondsToSelector:@selector(userListViewController:modelForBuddy:)]) {
-                        model = [weakself.dataSource userListViewController:self modelForBuddy:buddy];
-                    }
-                    else{
-                        model = [[EaseUserModel alloc] initWithBuddy:buddy];
-                    }
-                    
-                    if(model){
-                        [weakself.dataArray addObject:model];
-                    }
+    [[EMClient sharedClient].contactManager asyncGetContactsFromServer:^(NSArray *aList) {
+        [weakself.dataArray removeAllObjects];
+        NSMutableArray *contactsSource = [NSMutableArray arrayWithArray:aList];
+        
+        //从获取的数据中剔除黑名单中的好友
+        NSArray *blockList = [[EMClient sharedClient].contactManager getBlackListFromDB];
+        for (NSInteger i = (aList.count - 1); i >= 0; i--) {
+            NSString *buddy = [aList objectAtIndex:i];
+            if (![blockList containsObject:buddy]) {
+                [contactsSource addObject:buddy];
+                
+                id<IUserModel> model = nil;
+                if (weakself.dataSource && [weakself.dataSource respondsToSelector:@selector(userListViewController:modelForBuddy:)]) {
+                    model = [weakself.dataSource userListViewController:self modelForBuddy:buddy];
+                }
+                else{
+                    model = [[EaseUserModel alloc] initWithBuddy:buddy];
+                }
+                
+                if(model){
+                    [weakself.dataArray addObject:model];
                 }
             }
         }
+        [weakself.tableView reloadData];
+        [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
+    } failure:^(EMError *aError) {
         [weakself tableViewDidFinishTriggerHeader:YES reload:YES];
-    });
+    }];
 }
 
 - (void)dealloc

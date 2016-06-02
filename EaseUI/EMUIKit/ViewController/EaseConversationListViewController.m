@@ -154,13 +154,13 @@
                                            return(NSComparisonResult)NSOrderedDescending;
                                        }
                                    }];
-                [weakself.dataArray removeAllObjects];
-                [weakself.dataArray addObjectsFromArray:sorted];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakself.dataArray removeAllObjects];
+                    [weakself.dataArray addObjectsFromArray:sorted];
+                    [weakself.tableView reloadData];
+                });
             }
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself.tableView reloadData];
-        });
     });
 }
 
@@ -184,24 +184,25 @@
                            }];
         
         
-        
-        [weakself.dataArray removeAllObjects];
-        for (EMConversation *converstion in sorted) {
-            EaseConversationModel *model = nil;
-            if (weakself.dataSource && [weakself.dataSource respondsToSelector:@selector(conversationListViewController:modelForConversation:)]) {
-                model = [weakself.dataSource conversationListViewController:weakself
-                                               modelForConversation:converstion];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself.dataArray removeAllObjects];
+            for (EMConversation *converstion in sorted) {
+                EaseConversationModel *model = nil;
+                if (weakself.dataSource && [weakself.dataSource respondsToSelector:@selector(conversationListViewController:modelForConversation:)]) {
+                    model = [weakself.dataSource conversationListViewController:weakself
+                                                           modelForConversation:converstion];
+                }
+                else{
+                    model = [[EaseConversationModel alloc] initWithConversation:converstion];
+                }
+                
+                if (model) {
+                    [weakself.dataArray addObject:model];
+                }
             }
-            else{
-                model = [[EaseConversationModel alloc] initWithConversation:converstion];
-            }
-            
-            if (model) {
-                [weakself.dataArray addObject:model];
-            }
-        }
-        
-        [weakself tableViewDidFinishTriggerHeader:YES reload:YES];
+            [weakself.tableView reloadData];
+        });
+        [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
     });
 }
 
