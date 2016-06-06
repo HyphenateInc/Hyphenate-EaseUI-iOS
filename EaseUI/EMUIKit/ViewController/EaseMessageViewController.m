@@ -211,7 +211,10 @@
         } else {
             [[EMClient sharedClient].roomManager asyncLeaveChatroom:chatroomId success:^(EMChatroom *aRoom) {
                 [[EMClient sharedClient].chatManager deleteConversation:chatroomId deleteMessages:YES];
-            } failure:nil];
+            } failure:^(EMError *aError) {
+                //离开失败
+                //leave failed
+            }];
         }
     } failure:^(EMError *aError) {
         if (weakSelf) {
@@ -222,7 +225,10 @@
             if (aError.code == EMErrorChatroomAlreadyJoined) {
                 [[EMClient sharedClient].roomManager asyncLeaveChatroom:chatroomId success:^(EMChatroom *aRoom) {
                     [[EMClient sharedClient].chatManager deleteConversation:chatroomId deleteMessages:YES];
-                } failure:nil];
+                } failure:^(EMError *aError) {
+                    //离开失败
+                    //leave failed
+                }];
             }
         }
     }];
