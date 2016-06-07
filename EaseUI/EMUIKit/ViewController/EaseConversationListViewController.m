@@ -189,7 +189,7 @@
             [weakself.tableView reloadData];
             [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
         });
-    })
+    });
 }
 
 #pragma mark - EMGroupManagerDelegate
