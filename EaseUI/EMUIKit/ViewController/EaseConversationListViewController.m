@@ -21,7 +21,6 @@
 
 @interface EaseConversationListViewController ()
 {
-    dispatch_queue_t refreshQueue;
 }
 
 @end
@@ -137,40 +136,29 @@
 
 -(void)refreshAndSortView
 {
-    __weak typeof(self) weakself = self;
-    if (!refreshQueue) {
-        refreshQueue = dispatch_queue_create("com.easemob.conversation.refresh", DISPATCH_QUEUE_SERIAL);
-    }
-    dispatch_async(refreshQueue, ^{
-        if ([weakself.dataArray count] > 1) {
-            if ([[weakself.dataArray objectAtIndex:0] isKindOfClass:[EaseConversationModel class]]) {
-                NSArray* sorted = [weakself.dataArray sortedArrayUsingComparator:
-                                   ^(EaseConversationModel *obj1, EaseConversationModel* obj2){
-                                       EMMessage *message1 = [obj1.conversation latestMessage];
-                                       EMMessage *message2 = [obj2.conversation latestMessage];
-                                       if(message1.timestamp > message2.timestamp) {
-                                           return(NSComparisonResult)NSOrderedAscending;
-                                       }else {
-                                           return(NSComparisonResult)NSOrderedDescending;
-                                       }
-                                   }];
-                [weakself.dataArray removeAllObjects];
-                [weakself.dataArray addObjectsFromArray:sorted];
-            }
+    if ([self.dataArray count] > 1) {
+        if ([[self.dataArray objectAtIndex:0] isKindOfClass:[EaseConversationModel class]]) {
+            NSArray* sorted = [self.dataArray sortedArrayUsingComparator:
+                               ^(EaseConversationModel *obj1, EaseConversationModel* obj2){
+                                   EMMessage *message1 = [obj1.conversation latestMessage];
+                                   EMMessage *message2 = [obj2.conversation latestMessage];
+                                   if(message1.timestamp > message2.timestamp) {
+                                       return(NSComparisonResult)NSOrderedAscending;
+                                   }else {
+                                       return(NSComparisonResult)NSOrderedDescending;
+                                   }
+                               }];
+            [self.dataArray removeAllObjects];
+            [self.dataArray addObjectsFromArray:sorted];
+            [self.tableView reloadData];
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself.tableView reloadData];
-        });
-    });
+    }
 }
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
     __weak typeof(self) weakself = self;
-    if (!refreshQueue) {
-        refreshQueue = dispatch_queue_create("com.easemob.conversation.refresh", DISPATCH_QUEUE_SERIAL);
-    }
-    dispatch_async(refreshQueue, ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
         NSArray* sorted = [conversations sortedArrayUsingComparator:
                            ^(EMConversation *obj1, EMConversation* obj2){
@@ -182,26 +170,25 @@
                                    return(NSComparisonResult)NSOrderedDescending;
                                }
                            }];
-        
-        
-        
-        [weakself.dataArray removeAllObjects];
-        for (EMConversation *converstion in sorted) {
-            EaseConversationModel *model = nil;
-            if (weakself.dataSource && [weakself.dataSource respondsToSelector:@selector(conversationListViewController:modelForConversation:)]) {
-                model = [weakself.dataSource conversationListViewController:weakself
-                                               modelForConversation:converstion];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself.dataArray removeAllObjects];
+            for (EMConversation *converstion in sorted) {
+                EaseConversationModel *model = nil;
+                if (weakself.dataSource && [weakself.dataSource respondsToSelector:@selector(conversationListViewController:modelForConversation:)]) {
+                    model = [weakself.dataSource conversationListViewController:weakself
+                                                       modelForConversation:converstion];
+                }
+                else{
+                    model = [[EaseConversationModel alloc] initWithConversation:converstion];
+                }
+                
+                if (model) {
+                    [weakself.dataArray addObject:model];
+                }
             }
-            else{
-                model = [[EaseConversationModel alloc] initWithConversation:converstion];
-            }
-            
-            if (model) {
-                [weakself.dataArray addObject:model];
-            }
-        }
-        
-        [weakself tableViewDidFinishTriggerHeader:YES reload:YES];
+            [weakself.tableView reloadData];
+            [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
+        });
     });
 }
 
