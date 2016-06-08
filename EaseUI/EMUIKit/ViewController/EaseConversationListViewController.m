@@ -150,9 +150,9 @@
                                }];
             [self.dataArray removeAllObjects];
             [self.dataArray addObjectsFromArray:sorted];
-            [self.tableView reloadData];
         }
     }
+    [self.tableView reloadData];
 }
 
 - (void)tableViewDidTriggerHeaderRefresh
@@ -189,7 +189,7 @@
             [weakself.tableView reloadData];
             [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
         });
-    })
+    });
 }
 
 #pragma mark - EMGroupManagerDelegate
