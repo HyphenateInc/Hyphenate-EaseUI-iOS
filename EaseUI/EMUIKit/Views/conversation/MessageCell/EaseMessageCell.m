@@ -21,6 +21,8 @@
 #import "UIImageView+EMWebCache.h"
 #import "EaseEmotionEscape.h"
 #import "EaseLocalDefine.h"
+#import "UIColor+EaseUI.h"
+
 
 CGFloat const EaseMessageCellPadding = 10;
 
@@ -53,7 +55,6 @@ NSString *const EaseMessageCellIdentifierSendFile = @"EaseMessageCellSendFile";
 @implementation EaseMessageCell
 
 @synthesize statusButton = _statusButton;
-@synthesize bubbleView = _bubbleView;
 @synthesize hasRead = _hasRead;
 @synthesize activity = _activity;
 
@@ -119,7 +120,9 @@ NSString *const EaseMessageCellIdentifierSendFile = @"EaseMessageCellSendFile";
     
     _bubbleView = [[EaseBubbleView alloc] initWithMargin:isSender?_rightBubbleMargin:_leftBubbleMargin isSender:isSender];
     _bubbleView.translatesAutoresizingMaskIntoConstraints = NO;
-    _bubbleView.backgroundColor = [UIColor clearColor];
+    _bubbleView.backgroundColor = [UIColor EUPrimaryColor];
+    _bubbleView.layer.cornerRadius = 16.0f;
+    
     [self.contentView addSubview:_bubbleView];
     
     _avatarView = [[UIImageView alloc] init];
@@ -391,6 +394,16 @@ NSString *const EaseMessageCellIdentifierSendFile = @"EaseMessageCellSendFile";
 - (void)setRecvBubbleBackgroundImage:(UIImage *)recvBubbleBackgroundImage
 {
     _recvBubbleBackgroundImage = recvBubbleBackgroundImage;
+}
+
+- (void)setSenderBubbleBackgroundColor:(UIColor *)color
+{
+    _senderBubbleBackgroundColor = color;
+}
+
+- (void)setReceiverBubbleBackgroundColor:(UIColor *)color
+{
+    _receiverBubbleBackgroundColor = color;
 }
 
 - (void)setBubbleMaxWidth:(CGFloat)bubbleMaxWidth

@@ -111,6 +111,18 @@ typedef enum{
 
 /*!
  @property
+ @brief sender's Bubble BackgroundColor
+ */
+@property (strong, nonatomic) UIColor *senderBubbleBackgroundColor UI_APPEARANCE_SELECTOR;
+
+/*!
+ @property
+ @brief receiver's Bubble BackgroundColor
+ */
+@property (strong, nonatomic) UIColor *receiverBubbleBackgroundColor UI_APPEARANCE_SELECTOR;
+
+/*!
+ @property
  @brief 消息字体
  */
 @property (nonatomic) UIFont *messageTextFont UI_APPEARANCE_SELECTOR; //default [UIFont systemFontOfSize:15];
