@@ -35,7 +35,6 @@
 {
     UIMenuItem *_copyMenuItem;
     UIMenuItem *_deleteMenuItem;
-    UILongPressGestureRecognizer *_lpgr;
     
     dispatch_queue_t _messageQueue;
 }
@@ -81,8 +80,7 @@
 {
     [super viewDidLoad];
 
-    // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor colorWithRed:248 / 255.0 green:248 / 255.0 blue:248 / 255.0 alpha:1.0];
+    self.view.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     // init
@@ -91,13 +89,13 @@
     self.chatToolbar = [[EaseChatToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - chatbarHeight, self.view.frame.size.width, chatbarHeight) type:barType];
     self.chatToolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     
-    // gesture
+    // register gestures
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden:)];
     [self.view addGestureRecognizer:tap];
     
-    _lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-    _lpgr.minimumPressDuration = 0.5;
-    [self.tableView addGestureRecognizer:_lpgr];
+    UILongPressGestureRecognizer *longPressGestureRecog = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    longPressGestureRecog.minimumPressDuration = 0.5;
+    [self.tableView addGestureRecognizer:longPressGestureRecog];
     
     _messageQueue = dispatch_queue_create("hyphenate.io", NULL);
     
@@ -114,8 +112,8 @@
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
     
-//    [[EaseBaseMessageCell appearance] setSendBubbleBackgroundImage:[[UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_bg"] stretchableImageWithLeftCapWidth:5 topCapHeight:35]];
-//    [[EaseBaseMessageCell appearance] setRecvBubbleBackgroundImage:[[UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_bg"] stretchableImageWithLeftCapWidth:35 topCapHeight:35]];
+    [[EaseBaseMessageCell appearance] setSendBubbleBackgroundImage:[UIImage imageNamed:@"EaseUIResource.bundle/message_sender_bubble"]];
+    [[EaseBaseMessageCell appearance] setRecvBubbleBackgroundImage:[UIImage imageNamed:@"EaseUIResource.bundle/message_receiver_bubble"]];
     
     // Message bubble background color
     [EaseBaseMessageCell appearance].senderBubbleBackgroundColor = [UIColor EUPrimaryColor];
