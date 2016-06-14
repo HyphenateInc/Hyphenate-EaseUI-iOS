@@ -7,6 +7,7 @@
 //
 
 #import "MJRefreshStateHeader.h"
+#import "EaseLocalDefine.h"
 
 @interface MJRefreshStateHeader()
 {
@@ -87,7 +88,7 @@
         // 2.格式化日期
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         if ([cmp1 day] == [cmp2 day]) { // 今天
-            formatter.dateFormat = @"今天 HH:mm";
+            formatter.dateFormat = [NSString stringWithFormat:NSEaseLocalizedString(@"NSDateCategory.text14", @""),@"HH:mm"];
         } else if ([cmp1 year] == [cmp2 year]) { // 今年
             formatter.dateFormat = @"MM-dd HH:mm";
         } else {
@@ -95,10 +96,10 @@
         }
         NSString *time = [formatter stringFromDate:lastUpdatedTime];
         
-        // 3.显示日期
-        self.lastUpdatedTimeLabel.text = [NSString stringWithFormat:@"最后更新：%@", time];
+        // 3.显示日期"RefreshUpdate" = "Last update";
+        self.lastUpdatedTimeLabel.text = [NSString stringWithFormat:@"%@：%@",NSEaseLocalizedString(@"RefreshUpdate",@"Last update"), time];
     } else {
-        self.lastUpdatedTimeLabel.text = @"最后更新：无记录";
+        self.lastUpdatedTimeLabel.text = [NSString stringWithFormat:@"%@：%@",NSEaseLocalizedString(@"RefreshUpdate",@"Last update"), NSEaseLocalizedString(@"RefreshNoData", @"No data")];
     }
 }
 
@@ -108,9 +109,9 @@
     [super prepare];
     
     // 初始化文字
-    [self setTitle:MJRefreshHeaderIdleText forState:MJRefreshStateIdle];
-    [self setTitle:MJRefreshHeaderPullingText forState:MJRefreshStatePulling];
-    [self setTitle:MJRefreshHeaderRefreshingText forState:MJRefreshStateRefreshing];
+    [self setTitle:NSEaseLocalizedString(@"RefreshHeaderIdleText", @"Pull down to refresh") forState:MJRefreshStateIdle];
+    [self setTitle:NSEaseLocalizedString(@"RefreshHeaderPullingText", @"Loose to refresh immediately") forState:MJRefreshStatePulling];
+    [self setTitle:NSEaseLocalizedString(@"RefreshHeaderRefreshingText", @"Refreshing data...") forState:MJRefreshStateRefreshing];
 }
 
 - (void)placeSubviews

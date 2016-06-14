@@ -246,6 +246,7 @@
 "message.startRecordFail" = "failure to start recording";
 "message.noMessage" = "All messages cleared";
 "message.forbiddenWords" = "Your message contains forbidden words";
+"message.smallerImage" = "The image size is too large, please choose another one";
 
 //media
 "media.timeShort" = "The recording time is too short";
@@ -341,4 +342,15 @@
 "NSDateCategory.text11" = "hh:mm aa";
 "NSDateCategory.text12" = "hh:mm aa";
 "NSDateCategory.text13" = "M-d HH:mm";
-"NSDateCategory.text14" = "today %@";
+"NSDateCategory.text14" = "'today' %@";
+
+//Refresh
+"RefreshHeaderIdleText" = "Pull down to refresh";
+"RefreshHeaderPullingText" = "Loose to refresh immediately";
+"RefreshHeaderRefreshingText" = "Refreshing data...";
+"RefreshUpdate" = "Last update";
+"RefreshNoData" = "No data";
+"RefreshBackFooterIdleText" = "Pull up could load more";
+"RefreshBackFooterPullingText" = "Loose to load immediately";
+"RefreshBackFooterRefreshingText" = "Loading more data...";
+"RefreshBackFooterNoMoreDataText" = "No more data";

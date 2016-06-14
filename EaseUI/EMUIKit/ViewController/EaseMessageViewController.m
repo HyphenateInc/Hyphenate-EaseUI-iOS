@@ -1025,13 +1025,13 @@
                     if (asset) {
                         [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData *data, NSString *uti, UIImageOrientation orientation, NSDictionary *dic){
                             if (data.length > 10 * 1000 * 1000) {
-                                [self showHint:@"图片太大了，换个小点的"];
+                                [self showHint:NSLocalizedString(@"message.smallerImage", @"The image size is too large, please choose another one")];
                                 return;
                             }
                             if (data != nil) {
                                 [self sendImageMessageWithData:data];
                             } else {
-                                [self showHint:@"图片太大了，换个小点的"];
+                                [self showHint:NSLocalizedString(@"message.smallerImage", @"The image size is too large, please choose another one")];
                             }
                         }];
                     }
@@ -1045,7 +1045,7 @@
                         NSUInteger bufferSize = [assetRepresentation getBytes:buffer fromOffset:0.0 length:[assetRepresentation size] error:nil];
                         NSData* fileData = [NSData dataWithBytesNoCopy:buffer length:bufferSize freeWhenDone:YES];
                         if (fileData.length > 10 * 1000 * 1000) {
-                            [self showHint:@"图片太大了，换个小点的"];
+                            [self showHint:NSLocalizedString(@"message.smallerImage", @"The image size is too large, please choose another one")];
                             return;
                         }
                         [self sendImageMessageWithData:fileData];

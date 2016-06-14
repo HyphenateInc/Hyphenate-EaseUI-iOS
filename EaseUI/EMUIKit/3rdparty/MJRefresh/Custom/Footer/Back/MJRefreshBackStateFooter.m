@@ -7,6 +7,7 @@
 //
 
 #import "MJRefreshBackStateFooter.h"
+#import "EaseLocalDefine.h"
 
 @interface MJRefreshBackStateFooter()
 {
@@ -53,10 +54,10 @@
     [super prepare];
     
     // 初始化文字
-    [self setTitle:MJRefreshBackFooterIdleText forState:MJRefreshStateIdle];
-    [self setTitle:MJRefreshBackFooterPullingText forState:MJRefreshStatePulling];
-    [self setTitle:MJRefreshBackFooterRefreshingText forState:MJRefreshStateRefreshing];
-    [self setTitle:MJRefreshBackFooterNoMoreDataText forState:MJRefreshStateNoMoreData];
+    [self setTitle:NSEaseLocalizedString(@"RefreshBackFooterIdleText", @"Pull up could load more") forState:MJRefreshStateIdle];
+    [self setTitle:NSEaseLocalizedString(@"RefreshBackFooterPullingText", @"Loose to load immediately") forState:MJRefreshStatePulling];
+    [self setTitle:NSEaseLocalizedString(@"RefreshBackFooterRefreshingText", @"Loading more data...") forState:MJRefreshStateRefreshing];
+    [self setTitle:NSEaseLocalizedString(@"RefreshBackFooterNoMoreDataText", @"No more data") forState:MJRefreshStateNoMoreData];
 }
 
 - (void)placeSubviews
