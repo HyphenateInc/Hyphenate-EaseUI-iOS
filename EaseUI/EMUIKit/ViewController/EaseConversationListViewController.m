@@ -150,9 +150,10 @@
                                }];
             [self.dataArray removeAllObjects];
             [self.dataArray addObjectsFromArray:sorted];
-            [self.tableView reloadData];
         }
     }
+    
+    [self.tableView reloadData];
 }
 
 - (void)tableViewDidTriggerHeaderRefresh
