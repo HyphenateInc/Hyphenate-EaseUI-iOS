@@ -112,8 +112,8 @@
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
     
-    [[EaseBaseMessageCell appearance] setSendBubbleBackgroundImage:[UIImage imageNamed:@"EaseUIResource.bundle/message_sender_bubble"]];
-    [[EaseBaseMessageCell appearance] setRecvBubbleBackgroundImage:[UIImage imageNamed:@"EaseUIResource.bundle/message_receiver_bubble"]];
+//    [[EaseBaseMessageCell appearance] setSendBubbleBackgroundImage:[UIImage imageNamed:@"EaseUIResource.bundle/message_sender_bubble"]];
+//    [[EaseBaseMessageCell appearance] setRecvBubbleBackgroundImage:[UIImage imageNamed:@"EaseUIResource.bundle/message_receiver_bubble"]];
     
     // Message bubble background color
     [EaseBaseMessageCell appearance].senderBubbleBackgroundColor = [UIColor EUPrimaryColor];
