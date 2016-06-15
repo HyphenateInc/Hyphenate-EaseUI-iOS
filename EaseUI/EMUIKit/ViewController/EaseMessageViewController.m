@@ -131,6 +131,8 @@
     [[EaseChatBarMoreView appearance] setMoreViewBackgroundColor:[UIColor EUGreenLightColor]];
     
     [self tableViewDidTriggerHeaderRefresh];
+    
+    [self setupEmotion];
 }
 
 - (void)setupEmotion

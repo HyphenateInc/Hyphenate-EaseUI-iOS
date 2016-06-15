@@ -78,27 +78,27 @@
     }
     
     if (lastUpdatedTime) {
-        // 1.获得年月日
+        // 1. get date
         NSCalendar *calendar = [self currentCalendar];
         NSUInteger unitFlags = NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |NSCalendarUnitHour |NSCalendarUnitMinute;
         NSDateComponents *cmp1 = [calendar components:unitFlags fromDate:lastUpdatedTime];
         NSDateComponents *cmp2 = [calendar components:unitFlags fromDate:[NSDate date]];
         
-        // 2.格式化日期
+        // 2. format time
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        if ([cmp1 day] == [cmp2 day]) { // 今天
-            formatter.dateFormat = @"今天 HH:mm";
-        } else if ([cmp1 year] == [cmp2 year]) { // 今年
+        if ([cmp1 day] == [cmp2 day]) { // Today
+            formatter.dateFormat = @"HH:mm";
+        } else if ([cmp1 year] == [cmp2 year]) { // This year
             formatter.dateFormat = @"MM-dd HH:mm";
         } else {
-            formatter.dateFormat = @"yyyy-MM-dd HH:mm";
+            formatter.dateFormat = @"MM-dd-yyy HH:mm";
         }
         NSString *time = [formatter stringFromDate:lastUpdatedTime];
         
-        // 3.显示日期
-        self.lastUpdatedTimeLabel.text = [NSString stringWithFormat:@"最后更新：%@", time];
+        // 3. Show time
+        self.lastUpdatedTimeLabel.text = [NSString stringWithFormat:@"Last Update：%@", time];
     } else {
-        self.lastUpdatedTimeLabel.text = @"最后更新：无记录";
+        self.lastUpdatedTimeLabel.text = @"Last Update：No Record";
     }
 }
 
