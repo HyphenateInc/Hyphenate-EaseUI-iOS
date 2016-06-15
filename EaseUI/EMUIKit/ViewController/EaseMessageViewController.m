@@ -25,6 +25,7 @@
 #import "EaseCustomMessageCell.h"
 #import "UIImage+EMGIF.h"
 #import "EaseLocalDefine.h"
+#import "UIColor+EaseUI.h"
 
 #define KHintAdjustY    50
 
@@ -34,7 +35,6 @@
 {
     UIMenuItem *_copyMenuItem;
     UIMenuItem *_deleteMenuItem;
-    UILongPressGestureRecognizer *_lpgr;
     
     dispatch_queue_t _messageQueue;
 }
@@ -76,35 +76,34 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor colorWithRed:248 / 255.0 green:248 / 255.0 blue:248 / 255.0 alpha:1.0];
+
+    self.view.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    //初始化页面
+    // init
     CGFloat chatbarHeight = [EaseChatToolbar defaultHeight];
     EMChatToolbarType barType = self.conversation.type == EMConversationTypeChat ? EMChatToolbarTypeChat : EMChatToolbarTypeGroup;
     self.chatToolbar = [[EaseChatToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - chatbarHeight, self.view.frame.size.width, chatbarHeight) type:barType];
     self.chatToolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     
-    //初始化手势
+    // register gestures
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden:)];
     [self.view addGestureRecognizer:tap];
     
-    _lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-    _lpgr.minimumPressDuration = 0.5;
-    [self.tableView addGestureRecognizer:_lpgr];
+    UILongPressGestureRecognizer *longPressGestureRecog = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    longPressGestureRecog.minimumPressDuration = 0.5;
+    [self.tableView addGestureRecognizer:longPressGestureRecog];
     
-    _messageQueue = dispatch_queue_create("easemob.com", NULL);
+    _messageQueue = dispatch_queue_create("hyphenate.io", NULL);
     
-    //注册代理
     [EMCDDeviceManager sharedInstance].delegate = self;
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     
-    if (self.conversation.type == EMConversationTypeChatRoom)
-    {
+    if (self.conversation.type == EMConversationTypeChatRoom) {
         [self joinChatroom:self.conversation.conversationId];
     }
     
@@ -113,16 +112,23 @@
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
     
-    [[EaseBaseMessageCell appearance] setSendBubbleBackgroundImage:[[UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_bg"] stretchableImageWithLeftCapWidth:5 topCapHeight:35]];
-    [[EaseBaseMessageCell appearance] setRecvBubbleBackgroundImage:[[UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_bg"] stretchableImageWithLeftCapWidth:35 topCapHeight:35]];
+//    [[EaseBaseMessageCell appearance] setSendBubbleBackgroundImage:[UIImage imageNamed:@"EaseUIResource.bundle/message_sender_bubble"]];
+//    [[EaseBaseMessageCell appearance] setRecvBubbleBackgroundImage:[UIImage imageNamed:@"EaseUIResource.bundle/message_receiver_bubble"]];
+    
+    // Message bubble background color
+    [EaseBaseMessageCell appearance].senderBubbleBackgroundColor = [UIColor EUPrimaryColor];
+    [EaseBaseMessageCell appearance].receiverBubbleBackgroundColor = [UIColor EUGrayLightColor];
+
     
     [[EaseBaseMessageCell appearance] setSendMessageVoiceAnimationImages:@[[UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_audio_playing_full"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_audio_playing_000"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_audio_playing_001"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_audio_playing_002"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_audio_playing_003"]]];
     [[EaseBaseMessageCell appearance] setRecvMessageVoiceAnimationImages:@[[UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_audio_playing_full"],[UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_audio_playing000"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_audio_playing001"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_audio_playing002"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_audio_playing003"]]];
     
-    [[EaseBaseMessageCell appearance] setAvatarSize:40.f];
-    [[EaseBaseMessageCell appearance] setAvatarCornerRadius:20.f];
+    // Avatar Image
+    float avatarSize = 40.f;
+    [[EaseBaseMessageCell appearance] setAvatarSize:avatarSize];
+    [[EaseBaseMessageCell appearance] setAvatarCornerRadius:avatarSize/2];
     
-    [[EaseChatBarMoreView appearance] setMoreViewBackgroundColor:[UIColor colorWithRed:240 / 255.0 green:242 / 255.0 blue:247 / 255.0 alpha:1.0]];
+    [[EaseChatBarMoreView appearance] setMoreViewBackgroundColor:[UIColor EUGreenLightColor]];
     
     [self tableViewDidTriggerHeaderRefresh];
 }

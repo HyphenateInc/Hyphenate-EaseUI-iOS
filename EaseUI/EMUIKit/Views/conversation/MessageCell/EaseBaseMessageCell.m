@@ -79,8 +79,12 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
     _bubbleView.backgroundImageView.image = self.model.isSender ? self.sendBubbleBackgroundImage : self.recvBubbleBackgroundImage;
+    _bubbleView.backgroundColor = self.model.isSender ? self.senderBubbleBackgroundColor : self.receiverBubbleBackgroundColor;
+
     switch (self.model.bodyType) {
+            
         case EMMessageBodyTypeText:
         {
         }
