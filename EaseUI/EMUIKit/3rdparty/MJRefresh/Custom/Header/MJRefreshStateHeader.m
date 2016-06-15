@@ -96,7 +96,7 @@
         }
         NSString *time = [formatter stringFromDate:lastUpdatedTime];
         
-        // 3.显示日期"RefreshUpdate" = "Last update";
+        // 3.显示日期
         self.lastUpdatedTimeLabel.text = [NSString stringWithFormat:@"%@：%@",NSEaseLocalizedString(@"RefreshUpdate",@"Last update"), time];
     } else {
         self.lastUpdatedTimeLabel.text = [NSString stringWithFormat:@"%@：%@",NSEaseLocalizedString(@"RefreshUpdate",@"Last update"), NSEaseLocalizedString(@"RefreshNoData", @"No data")];
