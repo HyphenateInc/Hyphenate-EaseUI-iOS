@@ -17,7 +17,6 @@
 
 @interface EMContactDetailedTableViewCell : UITableViewCell<IModelCell>
 
-
 @property (weak, nonatomic) id<EaseUserCellDelegate> delegate;
 
 @property (strong, nonatomic) id<IUserModel> model;
@@ -25,9 +24,7 @@
 @property (nonatomic) BOOL showAvatar; //default is "YES"
 
 @property (strong, nonatomic) IBOutlet EaseImageView *avatarView;
-
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
-
 
 @property (strong, nonatomic) NSIndexPath *indexPath;
 

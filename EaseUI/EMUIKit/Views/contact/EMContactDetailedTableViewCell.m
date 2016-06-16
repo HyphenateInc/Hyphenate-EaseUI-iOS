@@ -76,7 +76,8 @@
     
     if ([_model.avatarURLPath length] > 0){
         [self.avatarView.imageView sd_setImageWithURL:[NSURL URLWithString:_model.avatarURLPath] placeholderImage:_model.avatarImage];
-    } else {
+    }
+    else {
         if (_model.avatarImage) {
             self.avatarView.image = _model.avatarImage;
         }
@@ -95,20 +96,12 @@
 //    _titleLabel.textColor = _titleLabelColor;
 //}
 
-#pragma mark - class method
-
-+ (CGFloat)cellHeightWithModel:(id)model
-{
-    return EaseUserCellMinHeight;
-}
-
 #pragma mark - action
 
 - (void)headerLongPress:(UILongPressGestureRecognizer *)longPress
 {
     if (longPress.state == UIGestureRecognizerStateBegan) {
-        if(_delegate && _indexPath && [_delegate respondsToSelector:@selector(cellLongPressAtIndexPath:)])
-        {
+        if(_delegate && _indexPath && [_delegate respondsToSelector:@selector(cellLongPressAtIndexPath:)]) {
             [_delegate cellLongPressAtIndexPath:self.indexPath];
         }
     }

@@ -4,26 +4,21 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EMContactDetailedTableViewCell">
-            <connections>
-                <outlet property="avatarView" destination="cIi-rz-gim" id="ptJ-93-R9o"/>
-                <outlet property="titleLabel" destination="1xi-J1-B3O" id="ekB-f8-X7g"/>
-            </connections>
-        </placeholder>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EMContactDetailedTableViewCell"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EMContactDetailedTableViewCell" rowHeight="253" id="KGk-i7-Jjw" customClass="EMContactDetailedTableViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="561" height="253"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EMContactDetailedTableViewCell" rowHeight="170" id="KGk-i7-Jjw" customClass="EMContactDetailedTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="561" height="170"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="561" height="252"/>
+                <rect key="frame" x="0.0" y="0.0" width="561" height="169"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cIi-rz-gim" customClass="EaseImageView">
-                        <rect key="frame" x="50" y="49" width="136" height="129"/>
+                        <rect key="frame" x="16" y="22" width="60" height="60"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1xi-J1-B3O">
-                        <rect key="frame" x="237" y="87" width="278" height="55"/>
+                        <rect key="frame" x="84" y="22" width="278" height="55"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
@@ -31,7 +26,11 @@
                 </subviews>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="0.6418722751" blue="0.2585511237" alpha="1" colorSpace="calibratedRGB"/>
-            <point key="canvasLocation" x="438.5" y="503.5"/>
+            <connections>
+                <outlet property="avatarView" destination="cIi-rz-gim" id="19I-AG-4UT"/>
+                <outlet property="titleLabel" destination="1xi-J1-B3O" id="LLX-cH-Z1o"/>
+            </connections>
+            <point key="canvasLocation" x="460.5" y="297"/>
         </tableViewCell>
     </objects>
 </document>
