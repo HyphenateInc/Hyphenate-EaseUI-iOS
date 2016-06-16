@@ -6,7 +6,8 @@ Pod::Spec.new do |spec|
   spec.homepage     = 'https://github.com/HyphenateInc/easeui_ios'
   spec.author       = {'Hyphenate Inc.' => 'info@hyphenate.io'}
   spec.source       =  {:git => 'https://github.com/HyphenateInc/easeui_ios.git', :tag => spec.version.to_s }
-  spec.source_files = 'EaseUI/**/*.{xib,h,m,mm}'
+  spec.source_files = 'EaseUI/**/*.{h,m,mm}'
+  spec.resource     = 'EaseUI/**/*.{png,bundle,xib,nib}'
   spec.platform     = :ios, '6.0'
   spec.vendored_libraries = ['EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb/libopencore-amrnb.a','EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb/libopencore-amrwb.a']
   spec.requires_arc = true
