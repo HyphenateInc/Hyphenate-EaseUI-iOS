@@ -1,13 +1,13 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL
+ *  * Hyphenate CONFIDENTIAL
  * __________________
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
  *
  * NOTICE: All information contained herein is, and remains
- * the property of EaseMob Technologies.
+ * the property of Hyphenate Inc.
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
- * from EaseMob Technologies.
+ * from Hyphenate Inc.
  */
 
 #import "EMCDDeviceManager+Media.h"
@@ -105,12 +105,12 @@ typedef NS_ENUM(NSInteger, EMAudioSession){
     return 1.0;
 }
 
-// 开始录音
+// Play the audio
 - (void)asyncStartRecordingWithFileName:(NSString *)fileName
                              completion:(void(^)(NSError *error))completion{
     NSError *error = nil;
     
-    // 判断当前是否是录音状态
+    // Cancel if it is currently playing
     if ([self isRecording]) {
         if (completion) {
             error = [NSError errorWithDomain:NSEaseLocalizedString(@"error.recordStoping", @"Record voice is not over yet")
@@ -121,7 +121,7 @@ typedef NS_ENUM(NSInteger, EMAudioSession){
         return ;
     }
     
-    // 文件名不存在
+    // File name does not exist
     if (!fileName || [fileName length] == 0) {
         error = [NSError errorWithDomain:NSEaseLocalizedString(@"error.notFound", @"File path not exist")
                                     code:-1
@@ -146,12 +146,12 @@ typedef NS_ENUM(NSInteger, EMAudioSession){
                                                  completion:completion];
 }
 
-// 停止录音
+// Stop recording
 -(void)asyncStopRecordingWithCompletion:(void(^)(NSString *recordPath,
                                                  NSInteger aDuration,
                                                  NSError *error))completion{
     NSError *error = nil;
-    // 当前是否在录音
+    // If it is currently recording
     if(![self isRecording]){
         if (completion) {
             error = [NSError errorWithDomain:NSEaseLocalizedString(@"error.recordNotBegin", @"Recording has not yet begun")
@@ -173,7 +173,7 @@ typedef NS_ENUM(NSInteger, EMAudioSession){
             completion(nil,0,error);
         }
         
-        // 如果录音时间较短，延迟1秒停止录音（iOS中，如果快速开始，停止录音，UI上会出现红条,为了防止用户又迅速按下，UI上需要也加一个延迟，长度大于此处的延迟时间，不允许用户循序重新录音。PS:研究了QQ和微信，就这么玩的,聪明）
+        // If the recording time is too shorty，in purpose delay one second
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)([EMCDDeviceManager recordMinDuration] * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [EMAudioRecorderUtil asyncStopRecordingWithCompletion:^(NSString *recordPath) {
                 [weakSelf setupAudioSessionCategory:EM_DEFAULT isActive:NO];
@@ -185,12 +185,12 @@ typedef NS_ENUM(NSInteger, EMAudioSession){
     [EMAudioRecorderUtil asyncStopRecordingWithCompletion:^(NSString *recordPath) {
         if (completion) {
             if (recordPath) {
-                //录音格式转换，从wav转为amr
+                // Convert wav to amr
                 NSString *amrFilePath = [[recordPath stringByDeletingPathExtension]
                                          stringByAppendingPathExtension:@"amr"];
                 BOOL convertResult = [self convertWAV:recordPath toAMR:amrFilePath];
                 if (convertResult) {
-                    // 删除录的wav
+                    // Remove the wav
                     NSFileManager *fm = [NSFileManager defaultManager];
                     [fm removeItemAtPath:recordPath error:nil];
                 }
@@ -201,12 +201,11 @@ typedef NS_ENUM(NSInteger, EMAudioSession){
     }];
 }
 
-// 取消录音
+// Cancel recording
 -(void)cancelCurrentRecording{
     [EMAudioRecorderUtil cancelCurrentRecording];
 }
 
-// 获取录音状态
 -(BOOL)isRecording{
     return [EMAudioRecorderUtil isRecording];
 }
@@ -223,21 +222,18 @@ typedef NS_ENUM(NSInteger, EMAudioSession){
     NSString *audioSessionCategory = nil;
     switch (session) {
         case EM_AUDIOPLAYER:
-            // 设置播放category
             audioSessionCategory = AVAudioSessionCategoryPlayback;
             break;
         case EM_AUDIORECORDER:
-            // 设置录音category
             audioSessionCategory = AVAudioSessionCategoryRecord;
             break;
         default:
-            // 还原category
             audioSessionCategory = AVAudioSessionCategoryAmbient;
             break;
     }
     
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    // 如果当前category等于要设置的，不需要再设置
+    
     if (![_currCategory isEqualToString:audioSessionCategory]) {
         [audioSession setCategory:audioSessionCategory error:nil];
     }

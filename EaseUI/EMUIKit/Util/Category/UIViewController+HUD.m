@@ -37,7 +37,6 @@ static const void *HttpRequestHUDKey = &HttpRequestHUDKey;
 
 - (void)showHint:(NSString *)hint
 {
-    //显示提示信息
     UIView *view = [[UIApplication sharedApplication].delegate window];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
     hud.userInteractionEnabled = NO;
@@ -51,7 +50,6 @@ static const void *HttpRequestHUDKey = &HttpRequestHUDKey;
 }
 
 - (void)showHint:(NSString *)hint yOffset:(float)yOffset {
-    //显示提示信息
     UIView *view = [[UIApplication sharedApplication].delegate window];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
     hud.userInteractionEnabled = NO;

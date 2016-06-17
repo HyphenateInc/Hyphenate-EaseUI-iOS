@@ -33,7 +33,6 @@
             case EMMessageBodyTypeText:
             {
                 EMTextMessageBody *textBody = (EMTextMessageBody *)_firstMessageBody;
-                // 表情映射。
                 NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper convertToSystemEmoticons:textBody.text];
                 self.text = didReceiveText;
             }
@@ -79,7 +78,7 @@
                     self.isMediaPlayed = [[message.ext objectForKey:@"isPlayed"] boolValue];
                 }
                 
-                // 音频路径
+                // audio file path
                 self.fileLocalPath = voiceBody.localPath;
                 self.fileURLPath = voiceBody.remotePath;
             }
@@ -96,7 +95,7 @@
                     self.image = self.thumbnailImage;
                 }
                 
-                // 视频路径
+                // video file path
                 self.fileLocalPath = videoBody.localPath;
                 self.fileURLPath = videoBody.remotePath;
             }
