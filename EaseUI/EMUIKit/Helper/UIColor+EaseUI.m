@@ -12,7 +12,17 @@
 
 + (UIColor *)EUPrimaryColor
 {
-    return [[self class] colorFromHexString:@"#A0D830"];
+    return [[self class] colorFromHexString:@"#C80002"];
+}
+
++ (UIColor *)EUPrimaryLightColor
+{
+    return [[self class] colorFromHexString:@"#E00912"];
+}
+
++ (UIColor *)EUPrimaryDarkColor
+{
+    return [[self class] colorFromHexString:@"#AF0000"];
 }
 
 + (UIColor *)EUGreenDarkColor

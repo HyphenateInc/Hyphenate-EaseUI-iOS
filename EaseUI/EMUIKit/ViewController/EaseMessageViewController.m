@@ -124,7 +124,7 @@
     [[EaseBaseMessageCell appearance] setAvatarSize:avatarSize];
     [[EaseBaseMessageCell appearance] setAvatarCornerRadius:avatarSize/2];
     
-    [[EaseChatBarMoreView appearance] setMoreViewBackgroundColor:[UIColor EUGreenLightColor]];
+    [[EaseChatBarMoreView appearance] setMoreViewBackgroundColor:[UIColor EUPrimaryLightColor]];
     
     [self tableViewDidTriggerHeaderRefresh];
     

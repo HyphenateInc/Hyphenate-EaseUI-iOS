@@ -11,6 +11,9 @@
 @interface UIColor (EaseUI)
 
 + (UIColor *)EUPrimaryColor;
++ (UIColor *)EUPrimaryLightColor;
++ (UIColor *)EUPrimaryDarkColor;
+
 + (UIColor *)EUGreenDarkColor;
 + (UIColor *)EUGreenLightColor;
 + (UIColor *)EURedColor;

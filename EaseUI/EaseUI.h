@@ -37,6 +37,7 @@
 #import "EaseConvertToCommonEmoticonsHelper.h"
 
 #import "NSDate+Category.h"
+#import "UIColor+EaseUI.h"
 #import "NSString+Valid.h"
 #import "UIImageView+EMWebCache.h"
 #import "UIViewController+HUD.h"

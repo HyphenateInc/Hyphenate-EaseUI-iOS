@@ -86,11 +86,11 @@ static EaseLocationViewController *defaultLocation = nil;
     [self.view addSubview:_mapView];
     
     if (_isSendLocation) {
-        _mapView.showsUserLocation = YES;//显示当前位置
+        _mapView.showsUserLocation = YES;
         
         UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
         [sendButton setTitle:NSEaseLocalizedString(@"send", @"Send") forState:UIControlStateNormal];
-        [sendButton setTitleColor:[UIColor colorWithRed:32 / 255.0 green:134 / 255.0 blue:158 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+        [sendButton setTitleColor:[UIColor EUPrimaryColor] forState:UIControlStateNormal];
         [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
         [sendButton addTarget:self action:@selector(sendLocation) forControlEvents:UIControlEventTouchUpInside];
         [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:sendButton]];

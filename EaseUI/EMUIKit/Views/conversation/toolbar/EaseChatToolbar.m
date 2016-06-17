@@ -17,6 +17,7 @@
 #import "EaseEmotionEscape.h"
 #import "EaseEmotionManager.h"
 #import "EaseLocalDefine.h"
+#import "UIColor+EaseUI.h"
 
 @interface EaseChatToolbar()<UITextViewDelegate, EMFaceDelegate>
 
@@ -205,7 +206,7 @@
     if (_faceView == nil) {
         _faceView = [[EaseFaceView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_toolbarView.frame), self.frame.size.width, 180)];
         [(EaseFaceView *)_faceView setDelegate:self];
-        _faceView.backgroundColor = [UIColor colorWithRed:240 / 255.0 green:242 / 255.0 blue:247 / 255.0 alpha:1.0];
+        _faceView.backgroundColor = [UIColor EUPrimaryColor];
         _faceView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     }
     
@@ -216,7 +217,7 @@
 {
     if (_moreView == nil) {
         _moreView = [[EaseChatBarMoreView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_toolbarView.frame), self.frame.size.width, 80) type:self.chatBarType];
-        _moreView.backgroundColor = [UIColor colorWithRed:240 / 255.0 green:242 / 255.0 blue:247 / 255.0 alpha:1.0];
+        _moreView.backgroundColor = [UIColor EUPrimaryColor];
         _moreView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     }
     
