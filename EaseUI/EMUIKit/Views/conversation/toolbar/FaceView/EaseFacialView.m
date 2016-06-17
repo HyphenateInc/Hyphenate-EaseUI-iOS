@@ -292,7 +292,6 @@
     }
 }
 
-//给faces设置位置
 -(void)loadFacialView:(NSArray*)emotionManagers size:(CGSize)size
 {
     for (UIView *view in [self.scrollview subviews]) {
@@ -313,7 +312,6 @@
     } else {
         [_collectionView setContentOffset:CGPointMake(CGRectGetWidth(self.frame)*((int)(offSet.x/CGRectGetWidth(self.frame))+1), 0) animated:NO];
     }
-//    [_collectionView setContentOffset:CGPointMake(CGRectGetWidth(self.frame)*2, 0) animated:NO];
 }
 
 #pragma mark - UIScrollViewDelegate

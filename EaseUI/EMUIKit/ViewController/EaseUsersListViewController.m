@@ -50,13 +50,6 @@
 {
     if (_showSearchBar != showSearchBar) {
         _showSearchBar = showSearchBar;
-        
-//        if (_showSearchBar) {
-//            <#statements#>
-//        }
-//        else{
-//            
-//        }
     }
 }
 
@@ -147,7 +140,7 @@
         [weakself.dataArray removeAllObjects];
         NSMutableArray *contactsSource = [NSMutableArray arrayWithArray:aList];
         
-        //从获取的数据中剔除黑名单中的好友
+        // remove the contact that is currently in the black list
         NSArray *blockList = [[EMClient sharedClient].contactManager getBlackListFromDB];
         for (NSInteger i = (aList.count - 1); i >= 0; i--) {
             NSString *buddy = [aList objectAtIndex:i];
