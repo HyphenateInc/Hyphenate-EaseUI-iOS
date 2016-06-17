@@ -53,6 +53,8 @@
     }
     
     self.avatarView.badge = userModel.unreadMessageCount;
+    self.avatarView.badgeSize = 32;
+    self.avatarView.badgeBackgroudColor = [UIColor EUPrimaryColor];
 }
 
 - (void)setConversationModel:(id<IConversationModel>)conversationModel
