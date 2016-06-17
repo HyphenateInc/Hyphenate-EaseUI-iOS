@@ -132,7 +132,7 @@
         if (_delegate && [_delegate respondsToSelector:@selector(userListViewController:didSelectUserModel:)]) {
             [_delegate userListViewController:self didSelectUserModel:model];
         } else {
-            EaseMessageViewController *viewController = [[EaseMessageViewController alloc] initWithConversationID:model.buddy conversationType:EMConversationTypeChat];
+            EaseMessageViewController *viewController = [[EaseMessageViewController alloc] initWithConversationID:model.username conversationType:EMConversationTypeChat];
             viewController.title = model.nickname;
             [self.navigationController pushViewController:viewController animated:YES];
         }
@@ -150,16 +150,16 @@
         //从获取的数据中剔除黑名单中的好友
         NSArray *blockList = [[EMClient sharedClient].contactManager getBlackListFromDB];
         for (NSInteger i = (aList.count - 1); i >= 0; i--) {
-            NSString *buddy = [aList objectAtIndex:i];
-            if (![blockList containsObject:buddy]) {
-                [contactsSource addObject:buddy];
+            NSString *username = [aList objectAtIndex:i];
+            if (![blockList containsObject:username]) {
+                [contactsSource addObject:username];
                 
                 id<IUserModel> model = nil;
-                if (weakself.dataSource && [weakself.dataSource respondsToSelector:@selector(userListViewController:modelForBuddy:)]) {
-                    model = [weakself.dataSource userListViewController:self modelForBuddy:buddy];
+                if (weakself.dataSource && [weakself.dataSource respondsToSelector:@selector(userListViewController:modelForusername:)]) {
+                    model = [weakself.dataSource userListViewController:self modelForusername:username];
                 }
                 else{
-                    model = [[EaseUserModel alloc] initWithBuddy:buddy];
+                    model = [[EaseUserModel alloc] initWithUsername:username];
                 }
                 
                 if(model){

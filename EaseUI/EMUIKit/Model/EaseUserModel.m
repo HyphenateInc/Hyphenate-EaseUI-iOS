@@ -14,13 +14,14 @@
 
 @implementation EaseUserModel
 
-- (instancetype)initWithBuddy:(NSString *)buddy
+- (instancetype)initWithUsername:(NSString *)username
 {
     self = [super init];
     if (self) {
-        _buddy = buddy;
-        _nickname = @"";
-        _avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
+        _username = username;
+        self.nickname = @"";
+        self.avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
+        self.unreadMessageCount = 0;
     }
     
     return self;

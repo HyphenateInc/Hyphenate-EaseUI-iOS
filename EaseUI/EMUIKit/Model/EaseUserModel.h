@@ -16,11 +16,12 @@
 
 @interface EaseUserModel : NSObject<IUserModel>
 
-@property (strong, nonatomic, readonly) NSString *buddy;
+@property (strong, nonatomic, readonly) NSString *username;
 @property (strong, nonatomic) NSString *nickname;
 @property (strong, nonatomic) NSString *avatarURLPath;
 @property (strong, nonatomic) UIImage *avatarImage;
+@property (nonatomic) int unreadMessageCount;
 
-- (instancetype)initWithBuddy:(NSString *)buddy;
+- (instancetype)initWithUsername:(NSString *)username;
 
 @end

@@ -118,7 +118,7 @@ CGFloat const EaseUserCellPadding = 10;
         self.titleLabel.text = _model.nickname;
     }
     else{
-       self.titleLabel.text = _model.buddy;
+       self.titleLabel.text = _model.username;
     }
     
     if ([_model.avatarURLPath length] > 0){

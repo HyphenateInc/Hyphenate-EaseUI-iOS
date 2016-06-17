@@ -40,7 +40,7 @@
         self.titleLabel.text = _userModel.nickname;
     }
     else{
-        self.titleLabel.text = _userModel.buddy;
+        self.titleLabel.text = _userModel.username;
     }
     
     if ([_userModel.avatarURLPath length] > 0){
@@ -51,6 +51,8 @@
             self.avatarView.image = _userModel.avatarImage;
         }
     }
+    
+    self.avatarView.badge = userModel.unreadMessageCount;
 }
 
 - (void)setConversationModel:(id<IConversationModel>)conversationModel

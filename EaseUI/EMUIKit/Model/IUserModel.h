@@ -13,14 +13,15 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
-@class EMBuddy;
+@class EMusername;
 @protocol IUserModel <NSObject>
 
-@property (strong, nonatomic, readonly) NSString *buddy;
+@property (strong, nonatomic, readonly) NSString *username;
 @property (strong, nonatomic) NSString *nickname;
 @property (strong, nonatomic) NSString *avatarURLPath;
 @property (strong, nonatomic) UIImage *avatarImage;
+@property (nonatomic) int unreadMessageCount;
 
-- (instancetype)initWithBuddy:(NSString *)buddy;
+- (instancetype)initWithUsername:(NSString *)username;
 
 @end
