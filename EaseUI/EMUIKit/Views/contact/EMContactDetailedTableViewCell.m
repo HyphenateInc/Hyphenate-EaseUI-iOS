@@ -10,14 +10,15 @@
 
 #import "EaseImageView.h"
 #import "UIImageView+EMWebCache.h"
-
+#import "EMConversation.h"
 
 @implementation EMContactDetailedTableViewCell
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-
+    
+    self.avatarView.imageCornerRadius = 0;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -29,58 +30,56 @@
     }
 }
 
-//+ (void)initialize
-//{
-    // UIAppearance Proxy Defaults
-//    EaseUserCell *cell = [self appearance];
-//    cell.titleLabelColor = [UIColor blackColor];
-//    cell.titleLabelFont = [UIFont systemFontOfSize:18];
-//}
-
-//- (instancetype)initWithStyle:(UITableViewCellStyle)style
-//              reuseIdentifier:(NSString *)reuseIdentifier
-//{
-//    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-//    if (self) {
-//        [self setupSubview];
-//        
-//        UILongPressGestureRecognizer *headerLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(headerLongPress:)];
-//        [self addGestureRecognizer:headerLongPress];
-//    }
-//    
-//    return self;
-//}
-
 #pragma mark - private layout subviews
 
-- (void)setupSubview
+- (void)setUserModel:(id<IUserModel>)userModel
 {
-    self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.titleLabel.numberOfLines = 2;
-    self.titleLabel.backgroundColor = [UIColor clearColor];
-//    self.titleLabel.font = _titleLabelFont;
-//    self.titleLabel.textColor = _titleLabelColor;
-    [self.contentView addSubview:self.titleLabel];
-}
-
-- (void)setModel:(id<IUserModel>)model
-{
-    _model = model;
+    _userModel = userModel;
     
-    if ([_model.nickname length] > 0) {
-        self.titleLabel.text = _model.nickname;
+    if ([_userModel.nickname length] > 0) {
+        self.titleLabel.text = _userModel.nickname;
     }
     else{
-        self.titleLabel.text = _model.buddy;
+        self.titleLabel.text = _userModel.buddy;
     }
     
-    if ([_model.avatarURLPath length] > 0){
-        [self.avatarView.imageView sd_setImageWithURL:[NSURL URLWithString:_model.avatarURLPath] placeholderImage:_model.avatarImage];
+    if ([_userModel.avatarURLPath length] > 0){
+        [self.avatarView.imageView sd_setImageWithURL:[NSURL URLWithString:_userModel.avatarURLPath] placeholderImage:_userModel.avatarImage];
     }
     else {
-        if (_model.avatarImage) {
-            self.avatarView.image = _model.avatarImage;
+        if (_userModel.avatarImage) {
+            self.avatarView.image = _userModel.avatarImage;
         }
+    }
+}
+
+- (void)setConversationModel:(id<IConversationModel>)conversationModel
+{
+    _conversationModel = conversationModel;
+    
+    if ([_conversationModel.title length] > 0) {
+        self.titleLabel.text = _conversationModel.title;
+    }
+    else{
+        self.titleLabel.text = _conversationModel.conversation.conversationId;
+    }
+    
+    if (self.showAvatar) {
+        if ([_conversationModel.avatarURLPath length] > 0){
+            [self.avatarView.imageView sd_setImageWithURL:[NSURL URLWithString:_conversationModel.avatarURLPath] placeholderImage:_conversationModel.avatarImage];
+        } else {
+            if (_conversationModel.avatarImage) {
+                self.avatarView.image = _conversationModel.avatarImage;
+            }
+        }
+    }
+    
+    if (_conversationModel.conversation.unreadMessagesCount == 0) {
+        _avatarView.showBadge = NO;
+    }
+    else{
+        _avatarView.showBadge = YES;
+        _avatarView.badge = _conversationModel.conversation.unreadMessagesCount;
     }
 }
 

@@ -47,30 +47,26 @@
 
 @implementation EaseMessageViewController
 
-@synthesize conversation = _conversation;
-@synthesize deleteConversationIfNull = _deleteConversationIfNull;
-@synthesize messageCountOfPage = _messageCountOfPage;
-@synthesize timeCellHeight = _timeCellHeight;
-@synthesize messageTimeIntervalTag = _messageTimeIntervalTag;
-
-- (instancetype)initWithConversationChatter:(NSString *)conversationChatter
-                           conversationType:(EMConversationType)conversationType
+- (instancetype)initWithConversationID:(NSString *)conversationID
+                      conversationType:(EMConversationType)conversationType
 {
-    if ([conversationChatter length] == 0) {
+    if ([conversationID length] == 0) {
         return nil;
     }
     
     self = [super initWithStyle:UITableViewStylePlain];
+    
     if (self) {
-        _conversation = [[EMClient sharedClient].chatManager getConversation:conversationChatter type:conversationType createIfNotExist:YES];
         
-        _messageCountOfPage = 10;
-        _timeCellHeight = 30;
-        _deleteConversationIfNull = YES;
-        _scrollToBottomWhenAppear = YES;
+        self.conversation = [[EMClient sharedClient].chatManager getConversation:conversationID type:conversationType createIfNotExist:YES];
+        
+        self.messageCountOfPage = 50;
+        self.timeCellHeight = 30;
+        self.deleteConversationIfNull = YES;
+        self.scrollToLatestMessage = YES;
         _messsagesSource = [NSMutableArray array];
         
-        [_conversation markAllMessagesAsRead];
+        [self.conversation markAllMessagesAsRead];
     }
     
     return self;
@@ -177,10 +173,10 @@
     self.isViewDidAppear = YES;
     [[EaseSDKHelper shareHelper] setIsShowingimagePicker:NO];
     
-    if (self.scrollToBottomWhenAppear) {
+    if (self.scrollToLatestMessage) {
         [self _scrollViewToBottom:NO];
     }
-    self.scrollToBottomWhenAppear = YES;
+    self.scrollToLatestMessage = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -261,7 +257,7 @@
 - (void)didReceiveKickedFromChatroom:(EMChatroom *)aChatroom
                               reason:(EMChatroomBeKickedReason)aReason
 {
-    if ([_conversation.conversationId isEqualToString:aChatroom.chatroomId])
+    if ([self.conversation.conversationId isEqualToString:aChatroom.chatroomId])
     {
         _isKicked = YES;
         CGRect frame = self.chatToolbar.frame;
@@ -303,7 +299,7 @@
             [self _sendHasReadResponseForMessages:unreadMessages isRead:YES];
         }
         
-        [_conversation markAllMessagesAsRead];
+        [self.conversation markAllMessagesAsRead];
     }
 }
 
@@ -594,7 +590,7 @@
 
 - (void)_locationMessageCellSelected:(id<IMessageModel>)model
 {
-    _scrollToBottomWhenAppear = NO;
+    self.scrollToLatestMessage = NO;
     
     EaseLocationViewController *locationController = [[EaseLocationViewController alloc] initWithLocation:CLLocationCoordinate2DMake(model.latitude, model.longitude)];
     [self.navigationController pushViewController:locationController animated:YES];
@@ -602,7 +598,7 @@
 
 - (void)_videoMessageCellSelected:(id<IMessageModel>)model
 {
-    _scrollToBottomWhenAppear = NO;
+    self.scrollToLatestMessage = NO;
     
     EMVideoMessageBody *videoBody = (EMVideoMessageBody*)model.message.body;
     
@@ -724,7 +720,8 @@
 
 - (void)_audioMessageCellSelected:(id<IMessageModel>)model
 {
-    _scrollToBottomWhenAppear = NO;
+    self.scrollToLatestMessage = NO;
+    
     EMVoiceMessageBody *body = (EMVoiceMessageBody*)model.message.body;
     EMDownloadStatus downloadStatus = [body downloadStatus];
     if (downloadStatus == EMDownloadStatusDownloading) {
@@ -770,7 +767,7 @@
 
 #pragma mark - pivate data
 
-- (void)_loadMessagesBefore:(NSString*)messageId
+- (void)loadMessagesBefore:(NSString*)messageId
                       count:(NSInteger)count
                      append:(BOOL)isAppend
 {
@@ -1092,7 +1089,7 @@
     switch (model.bodyType) {
         case EMMessageBodyTypeImage:
         {
-            _scrollToBottomWhenAppear = NO;
+            self.scrollToLatestMessage = NO;
             [self _imageMessageCellSelected:model];
         }
             break;
@@ -1114,7 +1111,7 @@
             break;
         case EMMessageBodyTypeFile:
         {
-            _scrollToBottomWhenAppear = NO;
+            self.scrollToLatestMessage = NO;
             [self showHint:@"Custom implementation!"];
         }
             break;
@@ -1146,7 +1143,7 @@
         return;
     }
     
-    _scrollToBottomWhenAppear = NO;
+    self.scrollToLatestMessage = NO;
 }
 
 #pragma mark - EMChatToolbarDelegate
@@ -1610,7 +1607,7 @@
     else {
         messageId = nil;
     }
-    [self _loadMessagesBefore:messageId count:self.messageCountOfPage append:YES];
+    [self loadMessagesBefore:messageId count:self.messageCountOfPage append:YES];
     
     [self tableViewDidFinishTriggerHeader:YES reload:YES];
 }
@@ -1792,7 +1789,7 @@
             [self _sendHasReadResponseForMessages:unreadMessages isRead:YES];
         }
         
-        [_conversation markAllMessagesAsRead];
+        [self.conversation markAllMessagesAsRead];
     }
 }
 

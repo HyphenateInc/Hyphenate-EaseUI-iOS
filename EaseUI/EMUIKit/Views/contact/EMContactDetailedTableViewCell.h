@@ -10,6 +10,7 @@
 
 #import "EaseUserCell.h"
 #import "IUserModel.h"
+#import "IConversationModel.h"
 #import "IModelCell.h"
 #import "EaseImageView.h"
 
@@ -19,7 +20,8 @@
 
 @property (weak, nonatomic) id<EaseUserCellDelegate> delegate;
 
-@property (strong, nonatomic) id<IUserModel> model;
+@property (strong, nonatomic) id<IUserModel> userModel;
+@property (strong, nonatomic) id<IConversationModel> conversationModel;
 
 @property (nonatomic) BOOL showAvatar; //default is "YES"
 

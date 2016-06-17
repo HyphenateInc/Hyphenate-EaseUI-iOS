@@ -28,7 +28,6 @@
 #import "EaseBubbleView.h"
 #import "EaseUserCell.h"
 
-
 #import "EaseChineseToPinyin.h"
 #import "EaseEmoji.h"
 #import "EaseEmotionEscape.h"
@@ -43,6 +42,10 @@
 #import "UIViewController+HUD.h"
 #import "UIViewController+DismissKeyboard.h"
 #import "EaseLocalDefine.h"
+
+// Constants
+#define kNotification_conversationUpdated @"kNotification_conversationUpdated"
+#define kNotification_unreadMessageCountUpdated @"kNotification_unreadMessageCountUpdated"
 
 #endif
 

@@ -300,7 +300,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
  @property
  @brief 当前页面显示时，是否滚动到最后一条
  */
-@property (nonatomic) BOOL scrollToBottomWhenAppear; //default YES;
+@property (nonatomic) BOOL scrollToLatestMessage; //default YES;
 
 /*!
  @property
@@ -376,8 +376,8 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
  @param conversationType 会话类型
  @result
  */
-- (instancetype)initWithConversationChatter:(NSString *)conversationChatter
-                           conversationType:(EMConversationType)conversationType;
+- (instancetype)initWithConversationID:(NSString *)conversationID
+                      conversationType:(EMConversationType)conversationType;
 
 /*!
  @method
