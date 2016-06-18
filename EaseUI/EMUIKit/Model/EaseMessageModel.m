@@ -29,6 +29,9 @@
         _nickname = message.from;
         _isSender = message.direction == EMMessageDirectionSend ? YES : NO;
         
+        _failImageName = @"imageDownloadFail";
+        _avatarImage = [UIImage imageNamed:@"user"];
+
         switch (_firstMessageBody.type) {
             case EMMessageBodyTypeText:
             {

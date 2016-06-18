@@ -47,6 +47,8 @@
 // Constants
 #define kNotification_conversationUpdated @"kNotification_conversationUpdated"
 #define kNotification_unreadMessageCountUpdated @"kNotification_unreadMessageCountUpdated"
+#define kNotification_didReceiveCmdMessages @"kNotification_didReceiveCmdMessages"
+#define kNotification_didReceiveMessages @"didReceiveMessages"
 
 #endif
 

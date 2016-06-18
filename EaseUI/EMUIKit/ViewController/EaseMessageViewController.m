@@ -546,8 +546,8 @@
     {
         EMMessage *message = messages[i];
         BOOL isSend = YES;
-        if (_dataSource && [_dataSource respondsToSelector:@selector(messageViewController:shouldSendHasReadAckForMessage:read:)]) {
-            isSend = [_dataSource messageViewController:self
+        if (self.dataSource && [self.dataSource respondsToSelector:@selector(messageViewController:shouldSendHasReadAckForMessage:read:)]) {
+            isSend = [self.dataSource messageViewController:self
                          shouldSendHasReadAckForMessage:message read:isRead];
         }
         else{
@@ -573,8 +573,8 @@
 - (BOOL)_shouldMarkMessageAsRead
 {
     BOOL isMark = YES;
-    if (_dataSource && [_dataSource respondsToSelector:@selector(messageViewControllerShouldMarkMessagesAsRead:)]) {
-        isMark = [_dataSource messageViewControllerShouldMarkMessagesAsRead:self];
+    if (self.dataSource && [self.dataSource respondsToSelector:@selector(messageViewControllerShouldMarkMessagesAsRead:)]) {
+        isMark = [self.dataSource messageViewControllerShouldMarkMessagesAsRead:self];
     }
     else{
         if (([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) || !self.isViewDidAppear)
@@ -852,8 +852,8 @@
         CGPoint location = [recognizer locationInView:self.tableView];
         NSIndexPath * indexPath = [self.tableView indexPathForRowAtPoint:location];
         BOOL canLongPress = NO;
-        if (_dataSource && [_dataSource respondsToSelector:@selector(messageViewController:canLongPressRowAtIndexPath:)]) {
-            canLongPress = [_dataSource messageViewController:self
+        if (self.dataSource && [self.dataSource respondsToSelector:@selector(messageViewController:canLongPressRowAtIndexPath:)]) {
+            canLongPress = [self.dataSource messageViewController:self
                                    canLongPressRowAtIndexPath:indexPath];
         }
         
@@ -861,8 +861,8 @@
             return;
         }
         
-        if (_dataSource && [_dataSource respondsToSelector:@selector(messageViewController:didLongPressRowAtIndexPath:)]) {
-            [_dataSource messageViewController:self
+        if (self.dataSource && [self.dataSource respondsToSelector:@selector(messageViewController:didLongPressRowAtIndexPath:)]) {
+            [self.dataSource messageViewController:self
                     didLongPressRowAtIndexPath:indexPath];
         }
         else{
@@ -923,8 +923,8 @@
             }
         }
         
-        if (_dataSource && [_dataSource respondsToSelector:@selector(isEmotionMessageFormessageViewController:messageModel:)]) {
-            BOOL flag = [_dataSource isEmotionMessageFormessageViewController:self messageModel:model];
+        if (self.dataSource && [self.dataSource respondsToSelector:@selector(isEmotionMessageFormessageViewController:messageModel:)]) {
+            BOOL flag = [self.dataSource isEmotionMessageFormessageViewController:self messageModel:model];
             if (flag) {
                 NSString *CellIdentifier = [EaseCustomMessageCell cellIdentifierWithModel:model];
                 //Sender cell
@@ -936,8 +936,8 @@
                     sendCell.selectionStyle = UITableViewCellSelectionStyleNone;
                 }
                 
-                if (_dataSource && [_dataSource respondsToSelector:@selector(emotionURLFormessageViewController:messageModel:)]) {
-                    EaseEmotion *emotion = [_dataSource emotionURLFormessageViewController:self messageModel:model];
+                if (self.dataSource && [self.dataSource respondsToSelector:@selector(emotionURLFormessageViewController:messageModel:)]) {
+                    EaseEmotion *emotion = [self.dataSource emotionURLFormessageViewController:self messageModel:model];
                     if (emotion) {
                         model.image = [UIImage sd_animatedGIFNamed:emotion.emotionOriginal];
                         model.fileURLPath = emotion.emotionOriginalURL;
@@ -982,8 +982,8 @@
             }
         }
         
-        if (_dataSource && [_dataSource respondsToSelector:@selector(isEmotionMessageFormessageViewController:messageModel:)]) {
-            BOOL flag = [_dataSource isEmotionMessageFormessageViewController:self messageModel:model];
+        if (self.dataSource && [self.dataSource respondsToSelector:@selector(isEmotionMessageFormessageViewController:messageModel:)]) {
+            BOOL flag = [self.dataSource isEmotionMessageFormessageViewController:self messageModel:model];
             if (flag) {
                 return [EaseCustomMessageCell cellHeightWithModel:model];
             }
@@ -1536,8 +1536,8 @@
             NSDate *messageDate = [NSDate dateWithTimeIntervalInMilliSecondSince1970:(NSTimeInterval)message.timestamp];
             NSString *timeStr = @"";
             
-            if (_dataSource && [_dataSource respondsToSelector:@selector(messageViewController:stringForDate:)]) {
-                timeStr = [_dataSource messageViewController:self stringForDate:messageDate];
+            if (self.dataSource && [self.dataSource respondsToSelector:@selector(messageViewController:stringForDate:)]) {
+                timeStr = [self.dataSource messageViewController:self stringForDate:messageDate];
             }
             else{
                 timeStr = [messageDate formattedTime];
@@ -1548,16 +1548,21 @@
         
         //Construct message model
         id<IMessageModel> model = nil;
-        if (_dataSource && [_dataSource respondsToSelector:@selector(messageViewController:modelForMessage:)]) {
-            model = [_dataSource messageViewController:self modelForMessage:message];
+        if (self.dataSource && [self.dataSource respondsToSelector:@selector(messageViewController:modelForMessage:)]) {
+            model = [self.dataSource messageViewController:self modelForMessage:message];
         }
-        else{
+        else {
             model = [[EaseMessageModel alloc] initWithMessage:message];
-            model.avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
-            model.failImageName = @"imageDownloadFail";
         }
         
         if (model) {
+            
+            // Mock user data
+            UIImage *mockAvatarImage = [UIImage imageNamed:model.nickname];
+            if (mockAvatarImage) {
+                model.avatarImage = mockAvatarImage;
+            }
+            
             [formattedArray addObject:model];
         }
     }
@@ -1684,8 +1689,8 @@
 - (void)sendImageMessageWithData:(NSData *)imageData
 {
     id progress = nil;
-    if (_dataSource && [_dataSource respondsToSelector:@selector(messageViewController:progressDelegateForMessageBodyType:)]) {
-        progress = [_dataSource messageViewController:self progressDelegateForMessageBodyType:EMMessageBodyTypeImage];
+    if (self.dataSource && [self.dataSource respondsToSelector:@selector(messageViewController:progressDelegateForMessageBodyType:)]) {
+        progress = [self.dataSource messageViewController:self progressDelegateForMessageBodyType:EMMessageBodyTypeImage];
     }
     else{
         progress = self;
@@ -1701,8 +1706,8 @@
 - (void)sendImageMessage:(UIImage *)image
 {
     id progress = nil;
-    if (_dataSource && [_dataSource respondsToSelector:@selector(messageViewController:progressDelegateForMessageBodyType:)]) {
-        progress = [_dataSource messageViewController:self progressDelegateForMessageBodyType:EMMessageBodyTypeImage];
+    if (self.dataSource && [self.dataSource respondsToSelector:@selector(messageViewController:progressDelegateForMessageBodyType:)]) {
+        progress = [self.dataSource messageViewController:self progressDelegateForMessageBodyType:EMMessageBodyTypeImage];
     }
     else{
         progress = self;
@@ -1719,8 +1724,8 @@
                              duration:(NSInteger)duration
 {
     id progress = nil;
-    if (_dataSource && [_dataSource respondsToSelector:@selector(messageViewController:progressDelegateForMessageBodyType:)]) {
-        progress = [_dataSource messageViewController:self progressDelegateForMessageBodyType:EMMessageBodyTypeVoice];
+    if (self.dataSource && [self.dataSource respondsToSelector:@selector(messageViewController:progressDelegateForMessageBodyType:)]) {
+        progress = [self.dataSource messageViewController:self progressDelegateForMessageBodyType:EMMessageBodyTypeVoice];
     }
     else{
         progress = self;
@@ -1737,8 +1742,8 @@
 - (void)sendVideoMessageWithURL:(NSURL *)url
 {
     id progress = nil;
-    if (_dataSource && [_dataSource respondsToSelector:@selector(messageViewController:progressDelegateForMessageBodyType:)]) {
-        progress = [_dataSource messageViewController:self progressDelegateForMessageBodyType:EMMessageBodyTypeVideo];
+    if (self.dataSource && [self.dataSource respondsToSelector:@selector(messageViewController:progressDelegateForMessageBodyType:)]) {
+        progress = [self.dataSource messageViewController:self progressDelegateForMessageBodyType:EMMessageBodyTypeVideo];
     }
     else{
         progress = self;
@@ -1789,20 +1794,20 @@
             if ([object isKindOfClass:[EaseMessageModel class]]) {
                 id<IMessageModel> model = object;
                 if ([message.messageId isEqualToString:model.messageId]) {
+                    
                     id<IMessageModel> model = nil;
                     if (self.dataSource && [self.dataSource respondsToSelector:@selector(messageViewController:modelForMessage:)]) {
                         model = [self.dataSource messageViewController:self modelForMessage:message];
                     }
-                    else{
+                    else {
                         model = [[EaseMessageModel alloc] initWithMessage:message];
-                        model.avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
-                        model.failImageName = @"imageDownloadFail";
                     }
                     
                     [self.tableView beginUpdates];
                     [self.dataArray replaceObjectAtIndex:i withObject:model];
                     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                     [self.tableView endUpdates];
+                    
                     break;
                 }
             }
@@ -1813,17 +1818,19 @@
 - (void)_updateMessageStatus:(EMMessage *)aMessage
 {
     BOOL isChatting = [aMessage.conversationId isEqualToString:self.conversation.conversationId];
+    
     if (aMessage && isChatting) {
+        
         id<IMessageModel> model = nil;
-        if (_dataSource && [_dataSource respondsToSelector:@selector(messageViewController:modelForMessage:)]) {
-            model = [_dataSource messageViewController:self modelForMessage:aMessage];
+        if (self.dataSource && [self.dataSource respondsToSelector:@selector(messageViewController:modelForMessage:)]) {
+            model = [self.dataSource messageViewController:self modelForMessage:aMessage];
         }
-        else{
+        else {
             model = [[EaseMessageModel alloc] initWithMessage:aMessage];
-            model.avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
-            model.failImageName = @"imageDownloadFail";
         }
+        
         if (model) {
+            
             __block NSUInteger index = NSNotFound;
             [self.dataArray enumerateObjectsUsingBlock:^(EaseMessageModel *model, NSUInteger idx, BOOL *stop){
                 if ([model conformsToProtocol:@protocol(IMessageModel)]) {
