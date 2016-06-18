@@ -11,5 +11,6 @@ Pod::Spec.new do |spec|
   spec.vendored_libraries = ['EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb/libopencore-amrnb.a','EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb/libopencore-amrwb.a']
   spec.requires_arc = true
   spec.resources    = ['export/resources/EaseUIResource.bundle','EaseUI/**/*.{xib,nib}']
+  spec.prefix_header_contents = '#import "UIColor+EaseUI.h"'
   spec.xcconfig     = {'OTHER_LDFLAGS' => '-ObjC'}
 end
