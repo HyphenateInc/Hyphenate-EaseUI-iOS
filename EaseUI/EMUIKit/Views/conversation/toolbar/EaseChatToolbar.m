@@ -124,7 +124,7 @@
     _inputTextView.scrollEnabled = YES;
     _inputTextView.returnKeyType = UIReturnKeySend;
     _inputTextView.enablesReturnKeyAutomatically = YES;
-    _inputTextView.placeHolder = NSEaseLocalizedString(@"message.toolBar.inputPlaceHolder", @"input a new message");
+    _inputTextView.placeHolder = NSEaseLocalizedString(@"message.toolBar.inputPlaceHolder", @"enter a new message");
     _inputTextView.delegate = self;
     _inputTextView.backgroundColor = [UIColor clearColor];
     _inputTextView.layer.borderColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
