@@ -15,6 +15,7 @@
 
 #import "EaseEmotionManager.h"
 #import "EaseLocalDefine.h"
+#import "UIColor+EaseUI.h"
 
 #define kButtomNum 5
 
