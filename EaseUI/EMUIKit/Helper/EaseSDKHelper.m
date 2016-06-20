@@ -31,13 +31,13 @@ static EaseSDKHelper *helper = nil;
 {
     self = [super init];
     if (self) {
-        [self commonInit];
+
     }
     
     return self;
 }
 
-+(instancetype)shareHelper
++ (instancetype)shareHelper
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -47,17 +47,68 @@ static EaseSDKHelper *helper = nil;
     return helper;
 }
 
-#pragma mark - private
 
-- (void)commonInit
+#pragma mark - init Hyphenate
+
+- (void)hyphenateApplication:(UIApplication *)application
+didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+                    appkey:(NSString *)appkey
+              apnsCertName:(NSString *)apnsCertName
+               otherConfig:(NSDictionary *)otherConfig
 {
+    // Regist the default notification from AppDelegate
+    [self setupAppDelegateNotifications];
     
+    // Configure Notification
+    [self registerNotification];
+    
+    EMOptions *options = [EMOptions optionsWithAppkey:appkey];
+    options.apnsCertName = apnsCertName;
+//    options.isAutoAcceptGroupInvitation = NO;
+    if ([otherConfig objectForKey:kSDKConfigEnableConsoleLogger]) {
+        options.enableConsoleLog = YES;
+    }
+    
+    BOOL sandBox = [otherConfig objectForKey:@"easeSandBox"] && [[otherConfig objectForKey:@"easeSandBox"] boolValue];
+    if (!sandBox) {
+        [[EMClient sharedClient] initializeSDKWithOptions:options];
+    }
 }
+
+
+#pragma mark - Push Notification
+
+- (void)registerNotification
+{
+    UIApplication *application = [UIApplication sharedApplication];
+    application.applicationIconBadgeNumber = 0;
+    
+    // iOS 8+ - Configuring the User Notification Settings
+    if([application respondsToSelector:@selector(registerUserNotificationSettings:)])
+    {
+        UIUserNotificationType notificationTypes = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:notificationTypes categories:nil];
+        [application registerUserNotificationSettings:settings];
+    }
+    
+#if !TARGET_IPHONE_SIMULATOR
+    
+    // iOS 8+ - Registration process with Apple Push Notification service
+    if ([application respondsToSelector:@selector(registerForRemoteNotifications)]) {
+        [application registerForRemoteNotifications];
+    }
+    else {
+        UIRemoteNotificationType notificationTypes = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert;
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
+    }
+#endif
+}
+
 
 #pragma mark - app delegate notifications
 
-// Listen the life cycle of the system so that it will be passed to the SDK
-- (void)_setupAppDelegateNotifications
+// Listen the life cycle of the app
+- (void)setupAppDelegateNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(appDidEnterBackgroundNotif:)
@@ -79,65 +130,6 @@ static EaseSDKHelper *helper = nil;
 - (void)appWillEnterForeground:(NSNotification*)notif
 {
     [[EMClient sharedClient] applicationWillEnterForeground:notif.object];
-}
-
-#pragma mark - register apns
-// regist push
-- (void)_registerRemoteNotification
-{
-    UIApplication *application = [UIApplication sharedApplication];
-    application.applicationIconBadgeNumber = 0;
-    
-    if([application respondsToSelector:@selector(registerUserNotificationSettings:)])
-    {
-        UIUserNotificationType notificationTypes = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:notificationTypes categories:nil];
-        [application registerUserNotificationSettings:settings];
-    }
-    
-#if !TARGET_IPHONE_SIMULATOR
-    //iOS8 regist APNS
-    if ([application respondsToSelector:@selector(registerForRemoteNotifications)]) {
-        [application registerForRemoteNotifications];
-    }else{
-        UIRemoteNotificationType notificationTypes = UIRemoteNotificationTypeBadge |
-        UIRemoteNotificationTypeSound |
-        UIRemoteNotificationTypeAlert;
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
-    }
-#endif
-}
-
-#pragma mark - init Hyphenate
-
-- (void)hyphenateApplication:(UIApplication *)application
-didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-                    appkey:(NSString *)appkey
-              apnsCertName:(NSString *)apnsCertName
-               otherConfig:(NSDictionary *)otherConfig
-{
-    //Regist the default notification from AppDelegate
-    [self _setupAppDelegateNotifications];
-    
-    //Regist APNS
-    [self _registerRemoteNotification];
-    
-    EMOptions *options = [EMOptions optionsWithAppkey:appkey];
-    options.apnsCertName = apnsCertName;
-    options.isAutoAcceptGroupInvitation = NO;
-    if ([otherConfig objectForKey:kSDKConfigEnableConsoleLogger]) {
-        options.enableConsoleLog = YES;
-    }
-    
-    BOOL sandBox = [otherConfig objectForKey:@"easeSandBox"] && [[otherConfig objectForKey:@"easeSandBox"] boolValue];
-    if (!sandBox) {
-        [[EMClient sharedClient] initializeSDKWithOptions:options];
-    }
-}
-
-- (void)dealloc
-{
-    
 }
 
 #pragma mark - send message
