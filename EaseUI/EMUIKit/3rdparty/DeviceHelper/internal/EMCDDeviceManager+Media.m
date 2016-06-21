@@ -39,24 +39,23 @@ typedef NS_ENUM(NSInteger, EMAudioSession){
     return dataPath;
 }
 
-// 播放音频
+// Playthe audio
 - (void)asyncPlayingWithPath:(NSString *)aFilePath
                   completion:(void(^)(NSError *error))completon{
     BOOL isNeedSetActive = YES;
-    // 如果正在播放音频，停止当前播放。
+    // If it is playing the audio, stop the current play。
     if([EMAudioPlayerUtil isPlaying]){
         [EMAudioPlayerUtil stopCurrentPlaying];
         isNeedSetActive = NO;
     }
     
     if (isNeedSetActive) {
-        // 设置播放时需要的category
         [self setupAudioSessionCategory:EM_AUDIOPLAYER
                                isActive:YES];
     }
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *wavFilePath = [[aFilePath stringByDeletingPathExtension] stringByAppendingPathExtension:@"wav"];
-    //如果转换后的wav文件不存在, 则去转换一下
+
     if (![fileManager fileExistsAtPath:wavFilePath]) {
         BOOL covertRet = [self convertAMR:aFilePath toWAV:wavFilePath];
         if (!covertRet) {
@@ -79,7 +78,6 @@ typedef NS_ENUM(NSInteger, EMAudioSession){
      }];
 }
 
-// 停止播放
 - (void)stopPlaying{
     [EMAudioPlayerUtil stopCurrentPlaying];
     [self setupAudioSessionCategory:EM_DEFAULT
@@ -94,7 +92,6 @@ typedef NS_ENUM(NSInteger, EMAudioSession){
     }
 }
 
-// 获取播放状态
 - (BOOL)isPlaying{
     return [EMAudioPlayerUtil isPlaying];
 }
