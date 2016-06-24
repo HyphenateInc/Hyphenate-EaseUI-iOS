@@ -1556,13 +1556,6 @@
         }
         
         if (model) {
-            
-            // Mock user data
-            UIImage *mockAvatarImage = [UIImage imageNamed:model.nickname];
-            if (mockAvatarImage) {
-                model.avatarImage = mockAvatarImage;
-            }
-            
             [formattedArray addObject:model];
         }
     }

@@ -28,7 +28,6 @@
 @property (strong, nonatomic) IBOutlet EaseImageView *avatarView;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *aboutMeLabel;
-@property (strong, nonatomic) IBOutlet UILabel *locationLabel;
 @property (strong, nonatomic) IBOutlet UIView *profileInfoContainer;
 
 @property (strong, nonatomic) NSIndexPath *indexPath;
