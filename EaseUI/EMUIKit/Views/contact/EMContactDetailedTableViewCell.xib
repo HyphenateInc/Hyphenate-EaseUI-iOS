@@ -34,8 +34,8 @@
                                 <color key="textColor" red="0.12560692372677501" green="0.12226489677126295" blue="0.70166266025641022" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="about me" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h2I-xf-SoR">
-                                <rect key="frame" x="78" y="25" width="491.5" height="16.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="about me" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h2I-xf-SoR">
+                                <rect key="frame" x="78" y="30" width="491.5" height="66"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <color key="textColor" red="0.26975256199999997" green="0.26975977420000002" blue="0.26975587010000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -53,9 +53,20 @@
                                     </mask>
                                 </variation>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DO9-YK-u1t">
+                                <rect key="frame" x="395" y="104" width="175" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="BVe-QX-paw"/>
+                                    <constraint firstAttribute="width" constant="175" id="KJW-ui-IvJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="DO9-YK-u1t" secondAttribute="bottom" constant="8" id="0PJ-bo-8dE"/>
                             <constraint firstItem="1xi-J1-B3O" firstAttribute="leading" secondItem="cIi-rz-gim" secondAttribute="trailing" constant="8" id="5aA-ac-OgF"/>
                             <constraint firstItem="C6F-gh-7hh" firstAttribute="top" secondItem="aqt-Fv-IzW" secondAttribute="top" id="Bqm-3l-tVG"/>
                             <constraint firstItem="cIi-rz-gim" firstAttribute="leading" secondItem="aqt-Fv-IzW" secondAttribute="leading" id="D4y-id-4S6"/>
@@ -66,7 +77,8 @@
                             <constraint firstItem="1xi-J1-B3O" firstAttribute="top" secondItem="aqt-Fv-IzW" secondAttribute="top" id="Wl6-9Z-0G8"/>
                             <constraint firstItem="1xi-J1-B3O" firstAttribute="leading" secondItem="aqt-Fv-IzW" secondAttribute="leading" constant="108" id="f4g-j6-uwr"/>
                             <constraint firstItem="h2I-xf-SoR" firstAttribute="leading" secondItem="aqt-Fv-IzW" secondAttribute="leading" constant="108" id="gZa-8h-IxK"/>
-                            <constraint firstItem="h2I-xf-SoR" firstAttribute="top" secondItem="1xi-J1-B3O" secondAttribute="bottom" constant="-5" id="hnU-jz-PZs"/>
+                            <constraint firstItem="h2I-xf-SoR" firstAttribute="top" secondItem="1xi-J1-B3O" secondAttribute="bottom" id="hnU-jz-PZs"/>
+                            <constraint firstAttribute="trailing" secondItem="DO9-YK-u1t" secondAttribute="trailing" constant="28" id="lnr-uW-oUk"/>
                             <constraint firstAttribute="bottom" secondItem="C6F-gh-7hh" secondAttribute="bottom" id="okX-04-ngp"/>
                             <constraint firstAttribute="trailing" secondItem="1xi-J1-B3O" secondAttribute="trailing" constant="28.5" id="x59-lf-OHd"/>
                         </constraints>
@@ -89,6 +101,7 @@
             <connections>
                 <outlet property="aboutMeLabel" destination="h2I-xf-SoR" id="kct-em-z4c"/>
                 <outlet property="avatarView" destination="cIi-rz-gim" id="19I-AG-4UT"/>
+                <outlet property="locationLabel" destination="DO9-YK-u1t" id="uhZ-MF-q2l"/>
                 <outlet property="profileInfoContainer" destination="aqt-Fv-IzW" id="BO1-1w-Rv4"/>
                 <outlet property="titleLabel" destination="1xi-J1-B3O" id="LLX-cH-Z1o"/>
             </connections>
