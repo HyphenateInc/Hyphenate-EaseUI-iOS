@@ -295,7 +295,22 @@ NSString *const EaseMessageCellIdentifierSendFile = @"EaseMessageCellSendFile";
         switch (model.bodyType) {
             case EMMessageBodyTypeText:
             {
-                _bubbleView.textLabel.attributedText = [[EaseEmotionEscape sharedInstance] attStringFromTextForChatting:model.text textFont:self.messageTextFont];
+                NSMutableAttributedString *attributedString = [NSMutableAttributedString new];
+                attributedString = [[EaseEmotionEscape sharedInstance] attStringFromTextForChatting:model.text textFont:self.messageTextFont];
+
+                // Create clickable link
+                NSURL *url = [self detectLinks:model.text];
+                if (url) {
+                    NSRange foundRange = [model.text rangeOfString:url.absoluteString];
+                    if (foundRange.location != NSNotFound) {
+                        [attributedString addAttribute:NSLinkAttributeName value:url range:foundRange];
+                        [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:foundRange];
+                        
+                        _bubbleView.textLabel.userInteractionEnabled = YES;
+                    }
+                }
+                
+                _bubbleView.textLabel.attributedText = attributedString;
             }
                 break;
             case EMMessageBodyTypeImage:
@@ -372,6 +387,28 @@ NSString *const EaseMessageCellIdentifierSendFile = @"EaseMessageCellSendFile";
                 break;
         }
     }
+}
+
+- (NSURL *)detectLinks:(NSString *)string
+{
+    NSError *error = nil;
+    NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink|NSTextCheckingTypePhoneNumber
+                                                               error:&error];
+    
+    NSArray *matches = [detector matchesInString:string
+                                         options:0
+                                           range:NSMakeRange(0, [string length])];
+    for (NSTextCheckingResult *match in matches) {
+        NSRange matchRange = [match range];
+        if ([match resultType] == NSTextCheckingTypeLink) {
+            NSURL *url = [match URL];
+            return url;
+        } else if ([match resultType] == NSTextCheckingTypePhoneNumber) {
+            NSString *phoneNumber = [match phoneNumber];
+        }
+    }
+    
+    return nil;
 }
 
 - (void)setStatusSize:(CGFloat)statusSize
