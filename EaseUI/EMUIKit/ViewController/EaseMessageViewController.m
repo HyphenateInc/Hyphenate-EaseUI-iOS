@@ -40,8 +40,6 @@
 }
 
 @property (strong, nonatomic) id<IMessageModel> playingVoiceModel;
-@property (nonatomic) BOOL isKicked;
-@property (nonatomic) BOOL isPlayingAudio;
 
 @end
 
@@ -115,7 +113,6 @@
     [EaseBaseMessageCell appearance].senderBubbleBackgroundColor = [UIColor EUPrimaryColor];
     [EaseBaseMessageCell appearance].receiverBubbleBackgroundColor = [UIColor EUGrayLightColor];
 
-    
     [[EaseBaseMessageCell appearance] setSendMessageVoiceAnimationImages:@[[UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_audio_playing_full"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_audio_playing_000"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_audio_playing_001"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_audio_playing_002"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_audio_playing_003"]]];
     [[EaseBaseMessageCell appearance] setRecvMessageVoiceAnimationImages:@[[UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_audio_playing_full"],[UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_audio_playing000"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_audio_playing001"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_audio_playing002"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_audio_playing003"]]];
     
@@ -128,22 +125,23 @@
     
     [self tableViewDidTriggerHeaderRefresh];
     
-    [self setupEmotion];
+    [self setupEmoji];
 }
 
-- (void)setupEmotion
+- (void)setupEmoji
 {
     if ([self.dataSource respondsToSelector:@selector(emotionFormessageViewController:)]) {
         NSArray* emotionManagers = [self.dataSource emotionFormessageViewController:self];
         [self.faceView setEmotionManagers:emotionManagers];
-    } else {
-        NSMutableArray *emotions = [NSMutableArray array];
+    }
+    else {
+        NSMutableArray *emojis = [NSMutableArray array];
         for (NSString *name in [EaseEmoji allEmoji]) {
             EaseEmotion *emotion = [[EaseEmotion alloc] initWithName:@"" emotionId:name emotionThumbnail:name emotionOriginal:name emotionOriginalURL:@"" emotionType:EMEmotionDefault];
-            [emotions addObject:emotion];
+            [emojis addObject:emotion];
         }
-        EaseEmotion *emotion = [emotions objectAtIndex:0];
-        EaseEmotionManager *manager= [[EaseEmotionManager alloc] initWithType:EMEmotionDefault emotionRow:3 emotionCol:7 emotions:emotions tagImage:[UIImage imageNamed:emotion.emotionId]];
+        EaseEmotion *emotion = [emojis objectAtIndex:0];
+        EaseEmotionManager *manager= [[EaseEmotionManager alloc] initWithType:EMEmotionDefault emotionRow:3 emotionCol:7 emotions:emojis tagImage:[UIImage imageNamed:emotion.emotionId]];
         [self.faceView setEmotionManagers:@[manager]];
     }
 }
@@ -187,7 +185,8 @@
     [[EMCDDeviceManager sharedInstance] disableProximitySensor];
 }
 
-#pragma mark - chatroom
+
+#pragma mark - Chat Room
 
 - (void)saveChatroom:(EMChatroom *)chatroom
 {
@@ -257,14 +256,14 @@
 {
     if ([self.conversation.conversationId isEqualToString:aChatroom.chatroomId])
     {
-        _isKicked = YES;
         CGRect frame = self.chatToolbar.frame;
         [self showHint:[NSString stringWithFormat:NSEaseLocalizedString(@"chatroom.remove", @"be removed from chatroom\'%@\'"), aChatroom.chatroomId] yOffset:-frame.size.height + KHintAdjustY];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
-#pragma mark - getter
+
+#pragma mark - Getters
 
 - (UIImagePickerController *)imagePicker
 {
@@ -277,7 +276,8 @@
     return _imagePicker;
 }
 
-#pragma mark - setter
+
+#pragma mark - Setters
 
 - (void)setIsViewDidAppear:(BOOL)isViewDidAppear
 {
@@ -325,13 +325,14 @@
 {
     _dataSource = dataSource;
     
-    [self setupEmotion];
+    [self setupEmoji];
 }
 
 - (void)setDelegate:(id<EaseMessageViewControllerDelegate>)delegate
 {
     _delegate = delegate;
 }
+
 
 #pragma mark - private helper
 
@@ -385,29 +386,7 @@
     [_menuController setMenuVisible:YES animated:YES];
 }
 
-- (void)_stopAudioPlayingWithChangeCategory:(BOOL)isChange
-{
-    //Stop playing
-    [[EMCDDeviceManager sharedInstance] stopPlaying];
-    [[EMCDDeviceManager sharedInstance] disableProximitySensor];
-    [EMCDDeviceManager sharedInstance].delegate = nil;
-    
-    //    MessageModel *playingModel = [self.EaseMessageReadManager stopMessageAudioModel];
-    //    NSIndexPath *indexPath = nil;
-    //    if (playingModel) {
-    //        indexPath = [NSIndexPath indexPathForRow:[self.dataSource indexOfObject:playingModel] inSection:0];
-    //    }
-    //
-    //    if (indexPath) {
-    //        dispatch_async(dispatch_get_main_queue(), ^{
-    //            [self.tableView beginUpdates];
-    //            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    //            [self.tableView endUpdates];
-    //        });
-    //    }
-}
-
-- (NSURL *)_convert2Mp4:(NSURL *)movUrl
+- (NSURL *)convertToMp4:(NSURL *)movUrl
 {
     NSURL *mp4Url = nil;
     AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:movUrl options:nil];
@@ -745,20 +724,15 @@
         }];
         
         if (isPrepare) {
-            _isPlayingAudio = YES;
             __weak EaseMessageViewController *weakSelf = self;
             [[EMCDDeviceManager sharedInstance] enableProximitySensor];
             [[EMCDDeviceManager sharedInstance] asyncPlayingWithPath:model.fileLocalPath completion:^(NSError *error) {
                 [[EaseMessageReadManager defaultManager] stopMessageAudioModel];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.tableView reloadData];
-                    weakSelf.isPlayingAudio = NO;
                     [[EMCDDeviceManager sharedInstance] disableProximitySensor];
                 });
             }];
-        }
-        else{
-            _isPlayingAudio = NO;
         }
     }
 }
@@ -854,7 +828,7 @@
         BOOL canLongPress = NO;
         if (self.dataSource && [self.dataSource respondsToSelector:@selector(messageViewController:canLongPressRowAtIndexPath:)]) {
             canLongPress = [self.dataSource messageViewController:self
-                                   canLongPressRowAtIndexPath:indexPath];
+                                       canLongPressRowAtIndexPath:indexPath];
         }
         
         if (!canLongPress) {
@@ -865,7 +839,7 @@
             [self.dataSource messageViewController:self
                     didLongPressRowAtIndexPath:indexPath];
         }
-        else{
+        else {
             id object = [self.dataArray objectAtIndex:indexPath.row];
             if (![object isKindOfClass:[NSString class]]) {
                 EaseMessageCell *cell = (EaseMessageCell *)[self.tableView cellForRowAtIndexPath:indexPath];
@@ -876,6 +850,7 @@
         }
     }
 }
+
 
 #pragma mark - Table view data source
 
@@ -895,7 +870,7 @@
 {
     id object = [self.dataArray objectAtIndex:indexPath.row];
     
-    //Time cell
+    // Time cell
     if ([object isKindOfClass:[NSString class]]) {
         NSString *TimeCellIdentifier = [EaseMessageTimeCell cellIdentifier];
         EaseMessageTimeCell *timeCell = (EaseMessageTimeCell *)[tableView dequeueReusableCellWithIdentifier:TimeCellIdentifier];
@@ -908,8 +883,9 @@
         timeCell.title = object;
         return timeCell;
     }
-    else{
+    else {
         id<IMessageModel> model = object;
+        
         if (_delegate && [_delegate respondsToSelector:@selector(messageViewController:cellForMessageModel:)]) {
             UITableViewCell *cell = [_delegate messageViewController:tableView cellForMessageModel:model];
             if (cell) {
@@ -924,13 +900,16 @@
         }
         
         if (self.dataSource && [self.dataSource respondsToSelector:@selector(isEmotionMessageFormessageViewController:messageModel:)]) {
+            
             BOOL flag = [self.dataSource isEmotionMessageFormessageViewController:self messageModel:model];
             if (flag) {
+                
                 NSString *CellIdentifier = [EaseCustomMessageCell cellIdentifierWithModel:model];
-                //Sender cell
+                
+                // Sender cell
                 EaseCustomMessageCell *sendCell = (EaseCustomMessageCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
                 
-                // Configure the cell...
+                // Configure the cell
                 if (sendCell == nil) {
                     sendCell = [[EaseCustomMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier model:model];
                     sendCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -945,6 +924,7 @@
                 }
                 sendCell.model = model;
                 sendCell.delegate = self;
+                
                 return sendCell;
             }
         }
@@ -953,7 +933,7 @@
         
         EaseBaseMessageCell *sendCell = (EaseBaseMessageCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         
-        // Configure the cell...
+        // Configure the cell
         if (sendCell == nil) {
             sendCell = [[EaseBaseMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier model:model];
             sendCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -961,6 +941,7 @@
         }
         
         sendCell.model = model;
+        
         return sendCell;
     }
 }
@@ -973,8 +954,9 @@
     if ([object isKindOfClass:[NSString class]]) {
         return self.timeCellHeight;
     }
-    else{
+    else {
         id<IMessageModel> model = object;
+        
         if (_delegate && [_delegate respondsToSelector:@selector(messageViewController:heightForMessageModel:withCellWidth:)]) {
             CGFloat height = [_delegate messageViewController:self heightForMessageModel:model withCellWidth:tableView.frame.size.width];
             if (height) {
@@ -993,17 +975,19 @@
     }
 }
 
+
 #pragma mark - UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSString *mediaType = info[UIImagePickerControllerMediaType];
+    
     if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
         NSURL *videoURL = info[UIImagePickerControllerMediaURL];
         // video url:
         // file:///private/var/mobile/Applications/B3CDD0B2-2F19-432B-9CFA-158700F4DE8F/tmp/capture-T0x16e39100.tmp.9R8weF/capturedvideo.mp4
         // we will convert it to mp4 format
-        NSURL *mp4 = [self _convert2Mp4:videoURL];
+        NSURL *mp4 = [self convertToMp4:videoURL];
         NSFileManager *fileman = [NSFileManager defaultManager];
         if ([fileman fileExistsAtPath:videoURL.path]) {
             NSError *error = nil;
@@ -1014,7 +998,8 @@
         }
         [self sendVideoMessageWithURL:mp4];
         
-    }else{
+    }
+    else {
         
         NSURL *url = info[UIImagePickerControllerReferenceURL];
         if (url == nil) {
@@ -1038,7 +1023,8 @@
                         }];
                     }
                 }];
-            } else {
+            }
+            else {
                 ALAssetsLibrary *alasset = [[ALAssetsLibrary alloc] init];
                 [alasset assetForURL:url resultBlock:^(ALAsset *asset) {
                     if (asset) {
@@ -1070,6 +1056,7 @@
     self.isViewDidAppear = YES;
     [[EaseSDKHelper shareHelper] setIsShowingimagePicker:NO];
 }
+
 
 #pragma mark - EaseMessageCellDelegate
 
@@ -1142,6 +1129,7 @@
     
     self.scrollToLatestMessage = NO;
 }
+
 
 #pragma mark - EMChatToolbarDelegate
 
@@ -1350,8 +1338,6 @@
 {
     [self sendLocationMessageLatitude:latitude longitude:longitude andAddress:address];
 }
-
-#pragma mark - Hyphenate
 
 #pragma mark - EMChatManagerDelegate
 
@@ -1579,8 +1565,6 @@
         });
     });
 }
-
-#pragma mark - public
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
