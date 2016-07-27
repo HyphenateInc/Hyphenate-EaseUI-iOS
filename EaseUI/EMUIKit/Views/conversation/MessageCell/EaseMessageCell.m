@@ -296,7 +296,7 @@ NSString *const EaseMessageCellIdentifierSendFile = @"EaseMessageCellSendFile";
             case EMMessageBodyTypeText:
             {
                 NSMutableAttributedString *attributedString = [NSMutableAttributedString new];
-                attributedString = [[EaseEmotionEscape sharedInstance] attStringFromTextForChatting:model.text textFont:self.messageTextFont];
+                attributedString = (NSMutableAttributedString*)[[EaseEmotionEscape sharedInstance] attStringFromTextForChatting:model.text textFont:self.messageTextFont];
 
                 // Create clickable link
                 NSURL *url = [self detectLinks:model.text];

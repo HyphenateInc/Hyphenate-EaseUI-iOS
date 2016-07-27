@@ -11,6 +11,7 @@
 #import "EaseImageView.h"
 #import "UIImageView+EMWebCache.h"
 #import "EMConversation.h"
+#import "UIColor+EaseUI.h"
 
 @implementation EMContactDetailedTableViewCell
 
