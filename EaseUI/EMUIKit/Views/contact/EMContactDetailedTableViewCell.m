@@ -20,6 +20,9 @@
     [super awakeFromNib];
     
     self.avatarView.imageCornerRadius = 0;
+    
+    UILongPressGestureRecognizer *headerLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(headerLongPress:)];
+    [self addGestureRecognizer:headerLongPress];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
