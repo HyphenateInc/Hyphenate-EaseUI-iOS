@@ -11,6 +11,7 @@
 #import "EaseImageView.h"
 #import "UIImageView+EMWebCache.h"
 #import "EMConversation.h"
+#import "UIColor+EaseUI.h"
 
 @implementation EMContactDetailedTableViewCell
 
@@ -19,6 +20,9 @@
     [super awakeFromNib];
     
     self.avatarView.imageCornerRadius = 0;
+    
+    UILongPressGestureRecognizer *headerLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(headerLongPress:)];
+    [self addGestureRecognizer:headerLongPress];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

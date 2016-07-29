@@ -126,7 +126,7 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         EaseConversationModel *model = [self.dataArray objectAtIndex:indexPath.row];
-        [[EMClient sharedClient].chatManager deleteConversation:model.conversation.conversationId deleteMessages:YES];
+        [[EMClient sharedClient].chatManager deleteConversation:model.conversation.conversationId isDeleteMessages:YES completion:nil];
         [self.dataArray removeObjectAtIndex:indexPath.row];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
@@ -172,30 +172,33 @@
                                }
                            }];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself.dataArray removeAllObjects];
-            for (EMConversation *converstion in sorted) {
-                EaseConversationModel *model = nil;
-                if (weakself.dataSource && [weakself.dataSource respondsToSelector:@selector(conversationListViewController:modelForConversation:)]) {
-                    model = [weakself.dataSource conversationListViewController:weakself
-                                                       modelForConversation:converstion];
+            EaseConversationListViewController *strongSelf = weakself;
+            if (strongSelf) {
+                [strongSelf.dataArray removeAllObjects];
+                for (EMConversation *converstion in sorted) {
+                    EaseConversationModel *model = nil;
+                    if (strongSelf.dataSource && [strongSelf.dataSource respondsToSelector:@selector(conversationListViewController:modelForConversation:)]) {
+                        model = [strongSelf.dataSource conversationListViewController:strongSelf
+                                                           modelForConversation:converstion];
+                    }
+                    else{
+                        model = [[EaseConversationModel alloc] initWithConversation:converstion];
+                    }
+                    
+                    if (model) {
+                        [strongSelf.dataArray addObject:model];
+                    }
                 }
-                else{
-                    model = [[EaseConversationModel alloc] initWithConversation:converstion];
-                }
-                
-                if (model) {
-                    [weakself.dataArray addObject:model];
-                }
+                [strongSelf.tableView reloadData];
+                [strongSelf tableViewDidFinishTriggerHeader:YES reload:NO];
             }
-            [weakself.tableView reloadData];
-            [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
         });
     });
 }
 
 #pragma mark - EMGroupManagerDelegate
 
-- (void)didUpdateGroupList:(NSArray *)groupList
+- (void)groupListDidUpdate:(NSArray *)aGroupList
 {
     [self tableViewDidTriggerHeaderRefresh];
 }
@@ -203,8 +206,8 @@
 #pragma mark - registerNotifications
 -(void)registerNotifications{
     [self unregisterNotifications];
-    [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
-    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].chatManager addDelegate:self];
+    [[EMClient sharedClient].groupManager addDelegate:self];
 }
 
 -(void)unregisterNotifications{

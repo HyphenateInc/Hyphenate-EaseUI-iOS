@@ -38,10 +38,3 @@
 + (NSString *)cellIdentifier;
 
 @end
-
-
-@protocol EaseUserCellDelegate <NSObject>
-
-- (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath;
-
-@end
