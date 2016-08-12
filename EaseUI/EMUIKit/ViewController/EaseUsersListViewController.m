@@ -136,34 +136,40 @@
 - (void)tableViewDidTriggerHeaderRefresh
 {
     __weak typeof(self) weakself = self;
-    [[EMClient sharedClient].contactManager asyncGetContactsFromServer:^(NSArray *aList) {
-        [weakself.dataArray removeAllObjects];
-        NSMutableArray *contactsSource = [NSMutableArray arrayWithArray:aList];
-        
-        // remove the contact that is currently in the black list
-        NSArray *blockList = [[EMClient sharedClient].contactManager getBlackListFromDB];
-        for (NSInteger i = (aList.count - 1); i >= 0; i--) {
-            NSString *username = [aList objectAtIndex:i];
-            if (![blockList containsObject:username]) {
-                [contactsSource addObject:username];
-                
-                id<IUserModel> model = nil;
-                if (weakself.dataSource && [weakself.dataSource respondsToSelector:@selector(userListViewController:modelForusername:)]) {
-                    model = [weakself.dataSource userListViewController:self modelForusername:username];
+    [[EMClient sharedClient].contactManager getContactsFromServerWithCompletion:^(NSArray *aList, EMError *aError) {
+        EaseUsersListViewController *strongSelf = weakself;
+        if (strongSelf) {
+            if (!aError) {
+                [strongSelf.dataArray removeAllObjects];
+                NSMutableArray *contactsSource = [NSMutableArray arrayWithArray:aList];
+
+                // remove the contact that is currently in the black list
+                NSArray *blockList = [[EMClient sharedClient].contactManager getBlackList];
+                for (NSInteger i = (aList.count - 1); i >= 0; i--) {
+                    NSString *username = [aList objectAtIndex:i];
+                    if (![blockList containsObject:username]) {
+                        [contactsSource addObject:username];
+
+                        id<IUserModel> model = nil;
+                        if (strongSelf.dataSource && [strongSelf.dataSource respondsToSelector:@selector(userListViewController:modelForusername:)]) {
+                            model = [strongSelf.dataSource userListViewController:self modelForusername:username];
+                        }
+                        else{
+                            model = [[EaseUserModel alloc] initWithUsername:username];
+                        }
+
+                        if(model){
+                            [strongSelf.dataArray addObject:model];
+                        }
+                    }
                 }
-                else{
-                    model = [[EaseUserModel alloc] initWithUsername:username];
-                }
-                
-                if(model){
-                    [weakself.dataArray addObject:model];
-                }
+                [strongSelf.tableView reloadData];
+                [strongSelf tableViewDidFinishTriggerHeader:YES reload:NO];
+            }
+            else {
+                [strongSelf tableViewDidFinishTriggerHeader:YES reload:YES];
             }
         }
-        [weakself.tableView reloadData];
-        [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
-    } failure:^(EMError *aError) {
-        [weakself tableViewDidFinishTriggerHeader:YES reload:YES];
     }];
 }
 
